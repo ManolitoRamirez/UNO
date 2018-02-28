@@ -1,3 +1,5 @@
+package UNO;
+
 
 public interface UnoConstants {
 	public static final int PLAYER1 = 1; // Indicate player 1
