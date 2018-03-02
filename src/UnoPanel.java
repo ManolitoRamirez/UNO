@@ -1,6 +1,3 @@
-package UNO;
-
-
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Image;
@@ -21,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.awt.event.ActionEvent;
@@ -142,7 +140,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 		otherPlayerName = new JLabel("No player has joined...");
 		otherPlayerName.setForeground(Color.WHITE);
-		otherPlayerName.setIcon(new ImageIcon(this.getClass().getResource("/Uno/UI/rsz_user.png")));
+		otherPlayerName.setIcon(new ImageIcon("./UI/rsz_user.png"));
 		otherPlayerName.setBounds(419, 6, 201, 131);
 		GameBoardPanel.add(otherPlayerName);
 
@@ -226,20 +224,20 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 											   //  =========       GAME HELP SCREEN BACKGROUND =========
 		HelpPanel.setOpaque(false);
-		JLabel helpBackground = new JLabel(new ImageIcon(this.getClass().getResource("/Uno/gameCards/HelpMenu.jpg")));
+		JLabel helpBackground = new JLabel(new ImageIcon("./gameCards/HelpMenu.jpg"));
 		helpBackground.setBounds(0, 0, 1166, 596);
 		HelpPanel.add(helpBackground);
 
 		// ================================================== GUI BACKGROUNDS AND PICS ====================================
 
 												//	=========       GAME BACKGROUND    =================
-		JLabel gameBackground = new JLabel(new ImageIcon(this.getClass().getResource("/Uno/gameCards/Background.jpg")));
+		JLabel gameBackground = new JLabel(new ImageIcon("./gameCards/Background.jpg"));
 		gameBackground.setBounds(0, 0, 1166, 596);
 		contentPane.add(gameBackground);
 
 											   //  ==========       MENU BACKFROUND    =================
 		GameMenuPanel.setOpaque(false);
-		JLabel menuBackground = new JLabel(new ImageIcon(this.getClass().getResource("/Uno/gameCards/GameMenu.jpg")));
+		JLabel menuBackground = new JLabel("./gameCards/GameMenu.jpg");
 		menuBackground.setBounds(0, 0, 1166, 596);
 		GameMenuPanel.add(menuBackground);
 
@@ -251,12 +249,13 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 		BufferedImage flippedCardImage = null;
 
 		try {
+            flippedCardImage = ImageIO.read(new File("./gameCards/FaceDown.png"));
+        } catch (IOException e2) {
+            // TODO Auto-generated catch block
+            e2.printStackTrace();
+        }
 
-			flippedCardImage = ImageIO.read(this.getClass().getResourceAsStream("/Uno/gameCards/FaceDown.png"));
 
-		} catch (IOException e) {
-
-		}
 
 		Image theResizedCardImageForFlippedCards =
 				flippedCardImage.getScaledInstance(selectedCardLabel.getWidth(), selectedCardLabel.getHeight(),Image.SCALE_DEFAULT);
@@ -443,7 +442,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 					try {
 
-						selectedCardImage = ImageIO.read(this.getClass().getResourceAsStream("/Uno/gameCards/"+currentSelectedCard+".jpg"));
+						selectedCardImage = ImageIO.read(this.getClass().getResourceAsStream("./gameCards/"+currentSelectedCard+".jpg"));
 
 					} catch (IOException e1) {
 
@@ -571,7 +570,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 				try {
 
-					middleCardImage = ImageIO.read(this.getClass().getResourceAsStream("/Uno/gameCards/"+middleCard+".jpg"));
+					middleCardImage = ImageIO.read(this.getClass().getResourceAsStream("./gameCards/"+middleCard+".jpg"));
 
 				} catch (IOException e) {
 
@@ -588,7 +587,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 				try {
 
-					topDiscardCardImage = ImageIO.read(this.getClass().getResourceAsStream("/Uno/gameCards/"+topDiscardCard+".jpg"));
+					topDiscardCardImage = ImageIO.read(this.getClass().getResourceAsStream("./gameCards/"+topDiscardCard+".jpg"));
 
 				} catch (IOException e) {
 
@@ -667,7 +666,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 		try {
 
-		middleCardImage = ImageIO.read(this.getClass().getResourceAsStream("/Uno/gameCards/"+middleCard+".jpg"));
+		middleCardImage = ImageIO.read(this.getClass().getResourceAsStream("./gameCards/"+middleCard+".jpg"));
 
 		} catch (IOException e) {
 
@@ -684,7 +683,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 		try {
 
-		topDiscardCardImage = ImageIO.read(this.getClass().getResourceAsStream("/Uno/gameCards/"+topDiscardCard+".jpg"));
+		topDiscardCardImage = ImageIO.read(this.getClass().getResourceAsStream("./gameCards/"+topDiscardCard+".jpg"));
 
 		} catch (IOException e) {
 
@@ -738,7 +737,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 				try {
 
-				middleCardImage = ImageIO.read(this.getClass().getResourceAsStream("/Uno/gameCards/"+middleCard+".jpg"));
+				middleCardImage = ImageIO.read(this.getClass().getResourceAsStream("./gameCards/"+middleCard+".jpg"));
 
 				} catch (IOException e) {
 
@@ -755,7 +754,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 				try {
 
-				topDiscardCardImage = ImageIO.read(this.getClass().getResourceAsStream("/Uno/gameCards/"+topDiscardCard+".jpg"));
+				topDiscardCardImage = ImageIO.read(this.getClass().getResourceAsStream("./gameCards/"+topDiscardCard+".jpg"));
 
 				} catch (IOException e) {
 
@@ -812,7 +811,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 		try {
 
-			middleCardImage = ImageIO.read(this.getClass().getResourceAsStream("/Uno/gameCards/"+middleCard+".jpg"));
+			middleCardImage = ImageIO.read(this.getClass().getResourceAsStream("./gameCards/"+middleCard+".jpg"));
 
 		} catch (IOException e) {
 
@@ -829,7 +828,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 		try {
 
-			topDiscardCardImage = ImageIO.read(this.getClass().getResourceAsStream("/Uno/gameCards/"+topDiscardCard+".jpg"));
+			topDiscardCardImage = ImageIO.read(this.getClass().getResourceAsStream("./gameCards/"+topDiscardCard+".jpg"));
 
 		} catch (IOException e) {
 
@@ -959,7 +958,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 			try {
 
-				middleCardImage = ImageIO.read(this.getClass().getResourceAsStream("/Uno/gameCards/"+middleCard+".jpg"));
+				middleCardImage = ImageIO.read(this.getClass().getResourceAsStream("./gameCards/"+middleCard+".jpg"));
 
 			} catch (IOException e) {
 
@@ -976,7 +975,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 			try {
 
-				topDiscardCardImage = ImageIO.read(this.getClass().getResourceAsStream("/Uno/gameCards/"+topDiscardCard+".jpg"));
+				topDiscardCardImage = ImageIO.read(this.getClass().getResourceAsStream("./gameCards/"+topDiscardCard+".jpg"));
 
 			} catch (IOException e) {
 

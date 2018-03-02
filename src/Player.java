@@ -1,6 +1,3 @@
-package UNO;
-
-
 public class Player {
 
 	Unocard[] hand = new Unocard[20];
