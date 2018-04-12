@@ -21,6 +21,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Arrays;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import javax.swing.JLayeredPane;
@@ -477,6 +478,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 				if (player == PLAYER1) {
 
+			    	System.out.println("Player hand:\n" + playersHand);
 					System.out.print("\nPlayer" + player + " make a move\n");
 					// wait for player 1 to make a move
 					waitForPlayerAction();
@@ -490,6 +492,8 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 					receiveInfoFromServer();
 
 				} else if (player == PLAYER2) {
+
+			    	System.out.println("Player hand:\n" + playersHand);
 
 					System.out.print("\nPlayer" + player + " Waiting to recieve to move from server\n");
 					// Receive info from the server
@@ -785,7 +789,6 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 	    playersHand = fromServer.readUTF();
 
-
 		status = fromServer.readInt();
 		System.out.println("STATUS_CODE: " + status);
 
@@ -805,6 +808,8 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 		// ============================== DISPLAY NEW CARDS =========================
     	String [] receivedCards = playersHand.split(":");
+    	slider.setMaximum(receivedCards.length - 1);
+    	System.out.println(Arrays.toString(receivedCards));
     	String middleCard = receivedCards[receivedCards.length/2];
 
     	BufferedImage middleCardImage = null;

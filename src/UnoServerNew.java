@@ -229,11 +229,10 @@ class HandleASession implements Runnable, UnoConstants
 				toPlayer.writeUTF(discardDeck.peekCard().toString()); // UnoPanel:486
 				toPlayer.flush();
 
-
 				// draw 2 cards
 				opponent.updateHandAfterDraw(drawDeck.popCard());
 				opponent.updateHandAfterDraw(drawDeck.popCard());
-
+				
 				// send the hands size
 				toPlayer.writeInt(opponent.getHandSize());
 				toPlayer.flush();
