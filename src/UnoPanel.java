@@ -237,7 +237,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 											   //  ==========       MENU BACKFROUND    =================
 		GameMenuPanel.setOpaque(false);
-		JLabel menuBackground = new JLabel("./gameCards/GameMenu.jpg");
+		JLabel menuBackground = new JLabel(new ImageIcon("./gameCards/GameMenu.jpg"));
 		menuBackground.setBounds(0, 0, 1166, 596);
 		GameMenuPanel.add(menuBackground);
 
@@ -442,7 +442,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 					try {
 
-						selectedCardImage = ImageIO.read(this.getClass().getResourceAsStream("./gameCards/"+currentSelectedCard+".jpg"));
+						selectedCardImage = ImageIO.read(new File("./gameCards/"+currentSelectedCard+".jpg"));
 
 					} catch (IOException e1) {
 
@@ -570,7 +570,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 				try {
 
-					middleCardImage = ImageIO.read(this.getClass().getResourceAsStream("./gameCards/"+middleCard+".jpg"));
+					middleCardImage = ImageIO.read(new File("./gameCards/"+middleCard+".jpg"));
 
 				} catch (IOException e) {
 
@@ -587,7 +587,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 				try {
 
-					topDiscardCardImage = ImageIO.read(this.getClass().getResourceAsStream("./gameCards/"+topDiscardCard+".jpg"));
+					topDiscardCardImage = ImageIO.read(new File("./gameCards/"+topDiscardCard+".jpg"));
 
 				} catch (IOException e) {
 
@@ -666,7 +666,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 		try {
 
-		middleCardImage = ImageIO.read(this.getClass().getResourceAsStream("./gameCards/"+middleCard+".jpg"));
+		middleCardImage = ImageIO.read(new File("./gameCards/"+middleCard+".jpg"));
 
 		} catch (IOException e) {
 
@@ -683,7 +683,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 		try {
 
-		topDiscardCardImage = ImageIO.read(this.getClass().getResourceAsStream("./gameCards/"+topDiscardCard+".jpg"));
+		topDiscardCardImage = ImageIO.read(new File("./gameCards/"+topDiscardCard+".jpg"));
 
 		} catch (IOException e) {
 
@@ -737,7 +737,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 				try {
 
-				middleCardImage = ImageIO.read(this.getClass().getResourceAsStream("./gameCards/"+middleCard+".jpg"));
+				middleCardImage = ImageIO.read(new File("./gameCards/"+middleCard+".jpg"));
 
 				} catch (IOException e) {
 
@@ -754,7 +754,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 				try {
 
-				topDiscardCardImage = ImageIO.read(this.getClass().getResourceAsStream("./gameCards/"+topDiscardCard+".jpg"));
+				topDiscardCardImage = ImageIO.read(new File("./gameCards/"+topDiscardCard+".jpg"));
 
 				} catch (IOException e) {
 
@@ -811,7 +811,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 		try {
 
-			middleCardImage = ImageIO.read(this.getClass().getResourceAsStream("./gameCards/"+middleCard+".jpg"));
+			middleCardImage = ImageIO.read(new File("./gameCards/"+middleCard+".jpg"));
 
 		} catch (IOException e) {
 
@@ -828,7 +828,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 		try {
 
-			topDiscardCardImage = ImageIO.read(this.getClass().getResourceAsStream("./gameCards/"+topDiscardCard+".jpg"));
+			topDiscardCardImage = ImageIO.read(new File("./gameCards/"+topDiscardCard+".jpg"));
 
 		} catch (IOException e) {
 
@@ -958,7 +958,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 			try {
 
-				middleCardImage = ImageIO.read(this.getClass().getResourceAsStream("./gameCards/"+middleCard+".jpg"));
+				middleCardImage = ImageIO.read(new File("./gameCards/"+middleCard+".jpg"));
 
 			} catch (IOException e) {
 
@@ -975,7 +975,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 			try {
 
-				topDiscardCardImage = ImageIO.read(this.getClass().getResourceAsStream("./gameCards/"+topDiscardCard+".jpg"));
+				topDiscardCardImage = ImageIO.read(new File("./gameCards/"+topDiscardCard+".jpg"));
 
 			} catch (IOException e) {
 
