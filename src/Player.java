@@ -1,6 +1,6 @@
 public class Player {
 
-	Unocard[] hand = new Unocard[20];
+	Unocard[] hand = new Unocard[80];
 	int handSize = 0;
 	static int playerNum = 0;
 	String playerName; // Simply 'Player 1' or 'Player 2'
@@ -36,7 +36,7 @@ public class Player {
 			}
 		}
 	}
-
+	
 // ===================================================================
 
 	public int getHandSize(){
