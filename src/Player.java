@@ -14,9 +14,9 @@ public class Player {
 		playerName = "Player" + playerNum;
 
 		// initiate hand
-		for (int i = 0; i <= 4; ++i) {
+		for (int i = 0; i <= 6; i++) {
 			hand[handSize] = d.popCard();
-			++handSize;
+			handSize++;
 		}
 	}
 
