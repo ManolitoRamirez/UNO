@@ -34,7 +34,7 @@ import javax.swing.SwingConstants;
 public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 	// Instantiate game variables
-		public int handSize = 5;
+		public int handSize = 7;
 		int player;
 
 		// while playing variables
@@ -194,8 +194,8 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 		// Slider =========================================
 		slider = new JSlider();
 		slider.setMinimum(0);
-		slider.setMaximum(4);
-		slider.setValue(2);
+		slider.setMaximum(6);
+		slider.setValue(3);
 		slider.setBounds(449, 489, 190, 29);
 		GameBoardPanel.add(slider);
 
