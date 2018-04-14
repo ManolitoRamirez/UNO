@@ -437,6 +437,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 					if(slider.getValue() <= cardsInHand.length - 1) {
 						currentSelectedCard = cardsInHand[slider.getValue()];
 					}
+					
 					// print the current selected card
 					System.out.println(currentSelectedCard);
 
@@ -452,10 +453,50 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 					Image theResizedCardImageForSelectedCard =
 							selectedCardImage.getScaledInstance(selectedCardLabel.getWidth(), selectedCardLabel.getHeight(),Image.SCALE_DEFAULT);
-
 					ImageIcon theSelectedCardIcon = new ImageIcon(theResizedCardImageForSelectedCard);
 
 					selectedCardLabel.setIcon(theSelectedCardIcon);
+					
+					if(slider.getValue() == 0)
+					{
+						GameBoardPanel.remove(leftCard);
+						GameBoardPanel.updateUI();
+					}
+					else
+					{
+						try {
+
+							selectedCardImage = ImageIO.read(new File("./gameCards/"+cardsInHand[slider.getValue() - 1]+".jpg"));
+
+						} catch (IOException e1) {
+
+						}
+						theResizedCardImageForSelectedCard = selectedCardImage.getScaledInstance(selectedCardLabel.getWidth(), selectedCardLabel.getHeight(),Image.SCALE_DEFAULT);
+						theSelectedCardIcon = new ImageIcon(theResizedCardImageForSelectedCard);
+						leftCard.setIcon(theSelectedCardIcon);
+						GameBoardPanel.add(leftCard);
+						GameBoardPanel.updateUI();
+					}
+					if(slider.getValue() == 6)
+					{
+						GameBoardPanel.remove(rightCard);
+						GameBoardPanel.updateUI();
+					}
+					else
+					{
+						try {
+
+							selectedCardImage = ImageIO.read(new File("./gameCards/"+cardsInHand[slider.getValue() + 1]+".jpg"));
+
+						} catch (IOException e1) {
+
+						}
+						theResizedCardImageForSelectedCard = selectedCardImage.getScaledInstance(selectedCardLabel.getWidth(), selectedCardLabel.getHeight(),Image.SCALE_DEFAULT);
+						theSelectedCardIcon = new ImageIcon(theResizedCardImageForSelectedCard);
+						rightCard.setIcon(theSelectedCardIcon);
+						GameBoardPanel.add(rightCard);
+						GameBoardPanel.updateUI();
+					}
 				}
 		    });
 
