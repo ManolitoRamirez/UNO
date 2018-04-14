@@ -477,7 +477,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 						GameBoardPanel.add(leftCard);
 						GameBoardPanel.updateUI();
 					}
-					if(slider.getValue() == 6)
+					if(slider.getValue() == cardsInHand.length - 1)
 					{
 						GameBoardPanel.remove(rightCard);
 						GameBoardPanel.updateUI();
