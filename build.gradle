@@ -1,0 +1,59 @@
+plugins {
+  id  'com.github.spotbugs' version '1.6.1'
+}
+
+apply plugin: 'application'
+apply plugin: 'java'
+
+///////////////////////////////////////////////////////////////////////////
+// Configure SpotBugs
+///////////////////////////////////////////////////////////////////////////
+spotbugs {
+  toolVersion = '3.1.1'
+  effort = 'min'
+  reportLevel = 'high'
+  // Keep checkstyle a little quieter
+  ignoreFailures = true
+}
+
+// To generate an HTML report instead of XML
+tasks.withType(com.github.spotbugs.SpotBugsTask) {
+  reports {
+    xml.enabled = false
+    html.enabled = true
+  }
+}
+///////////////////////////////////////////////////////////////////////////
+// 
+///////////////////////////////////////////////////////////////////////////
+sourceSets {
+        // main.java.srcDirs = ['src.main.java.memoranda']
+        // main.resources.srcDirs = ['src/net/sf/memoranda/ui/']
+        test {
+          java {
+            srcDirs = ['src/main/java/memoranda/tests']
+          }
+        }
+}
+
+mainClassName = 'main/java/memoranda/Start'
+
+compileJava.options.encoding = 'UTF-8'
+
+// Repositories and dependencies for code go here
+repositories {
+  mavenCentral()
+  jcenter()
+}
+
+dependencies {
+  compile 'com.io7m.xom:xom:1.2.+'
+  compile 'net.sourceforge.nekohtml:nekohtml:1.9.+'
+  testCompile 'junit:junit:4.12'
+  compile 'junit:junit:4.12'
+  compile 'org.json:json:20171018'
+}
+
+task wrapper (type: Wrapper) {
+  gradleVersion = '4.5.1' // Version required
+}
