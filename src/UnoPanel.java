@@ -699,7 +699,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 				// decrememnt the hand size
 				--handSize;
 				slider.setMaximum(handSize - 1);
-
+				
 				// read opponents hand size
 				int tmp = fromServer.readInt();
 				otherPlayerhandSize.setText(Integer.toString(tmp));

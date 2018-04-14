@@ -22,7 +22,7 @@ public class UnoServerNew extends JFrame implements UnoConstants {
 		drawDeck.fillDeck();
 
 		JTextArea jta = new JTextArea();
-
+		
 		// Create GUI for server ===================================
 		// Place text area on the frame
 	    setLayout(new BorderLayout());
@@ -265,7 +265,6 @@ class HandleASession implements Runnable, UnoConstants
 				// send the first discard to the player
 				toPlayer.writeUTF(discardDeck.peekCard().toString()); // UnoPanel:486
 				toPlayer.flush();
-
 			}
 
 
