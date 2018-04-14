@@ -434,8 +434,9 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 			public void stateChanged(ChangeEvent e) {
 					// should return the card in the hand @ that pos
 					String [] cardsInHand = playersHand.split(":");
-					currentSelectedCard = cardsInHand[slider.getValue()];
-
+					if(slider.getValue() <= cardsInHand.length - 1) {
+						currentSelectedCard = cardsInHand[slider.getValue()];
+					}
 					// print the current selected card
 					System.out.println(currentSelectedCard);
 
