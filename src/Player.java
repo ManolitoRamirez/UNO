@@ -12,7 +12,7 @@ public class Player {
 	public Player(Unodeck d) {
 		++playerNum;
 		playerName = "Player" + playerNum;
-
+		
 		// initiate hand
 		for (int i = 0; i <= 6; i++) {
 			hand[handSize] = d.popCard();
@@ -53,6 +53,9 @@ public class Player {
 			if (hand[i].getValue() <= 5) {
 				cards[i] = hand[i].getColor() + "," + hand[i].getValue();
 			} else {
+				if(hand[i].getAction() == "wild") {
+					hand[i].setColor("black");
+				}
 				cards[i] = hand[i].getColor() + "," + hand[i].getAction();
 			}
 		}
