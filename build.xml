@@ -1,0 +1,10 @@
+<project name="UNO" basedir=".">
+	<property name="name" value="UNO"/>
+	<property name="source.dir" value="${basedir}/src"/>
+	<target name="checkbuild">
+		<available file="${build.dir}/${jarname}" property="build.present"/>
+	</target>
+	<target name="build-if-needed" depends="checkbuild" unless="build.present">
+		<antcall target="package"/>
+	</target>
+</project>
