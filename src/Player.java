@@ -77,7 +77,7 @@ public class Player {
 	/** update the handSize to have the index passed go away */
 	public void updateHandAfterPlay(int indexToRemove){
 
-		Unocard[] newHand = new Unocard[20]; // remove one card for the play
+		Unocard[] newHand = new Unocard[80]; // remove one card for the play
 		for (int i = 0; i < handSize; ++i) {
 			if (i == (handSize - 1)) {
 				// break if the handSize is equal to index

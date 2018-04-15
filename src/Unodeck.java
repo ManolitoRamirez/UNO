@@ -111,11 +111,11 @@ public class Unodeck {
 		card.setValue(6);
 		card.setAction("wild");
 		deck[72]=card;
-//
-//		card = new Unocard();
-//		card.setValue(6);
-//		card.setAction("wild");
-		deck[73]=card;
+
+		Unocard card2 = new Unocard();
+		card2.setValue(6);
+		card2.setAction("wild");
+		deck[73]=card2;
 
 		deckSize = MAX_DECK_SIZE;
 	}
