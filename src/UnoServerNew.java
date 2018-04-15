@@ -98,6 +98,8 @@ class HandleASession implements Runnable, UnoConstants
 		// private
 		// values for checking win
 		private boolean continueToPlay = true;
+		private boolean skippedPlayer1 = false;
+		private boolean skippedPlayer2 = false;
 
 		// Declare Players
 		public Player player1; // new Player(drawDeck);
@@ -153,14 +155,20 @@ class HandleASession implements Runnable, UnoConstants
 
 					 while (continueToPlay) {
 						 // get the play from player1
-						 play(player1, player2, fromPlayer1, toPlayer1, discardDeck, drawDeck, toPlayer2);
+						 if(!skippedPlayer1)
+							 play(player1, player2, fromPlayer1, toPlayer1, discardDeck, drawDeck, toPlayer2);
+						 
+						 skippedPlayer1 = false;
 
 						 // check to see if player1's move ends game
 						 if (!continueToPlay)
 							 break;
 
 						 // get the play from player2
-						 play(player2, player1, fromPlayer2, toPlayer2, discardDeck, drawDeck, toPlayer1);
+						 if(!skippedPlayer2)
+							 play(player2, player1, fromPlayer2, toPlayer2, discardDeck, drawDeck, toPlayer1);
+						 
+						 skippedPlayer2 = false;
 					 }
 				 }
 
@@ -176,11 +184,15 @@ class HandleASession implements Runnable, UnoConstants
 		private void play(Player player, Player opponent, DataInputStream fromPlayer,
 				DataOutputStream toPlayer, Unodeck discardDeck, Unodeck drawDeck, DataOutputStream toOpponent)  throws IOException {
 
-			int sendStatus;
+			int sendStatus = CONTINUE;
 			// get the value for what button the player choose, (draw(3) or play(4)).
 			int receivedStatus = fromPlayer.readInt(); // UnoServer:482 | UnoServer:511, respective to status
-
-
+			
+			if(receivedStatus == SKIP && player.playerName.equals("Player 1"))
+				skippedPlayer2 = true;
+			else if(receivedStatus == SKIP && player.playerName.equals("Player 2"))
+				skippedPlayer1 = true;
+			
 			// run this if they want to play a card
 			if (receivedStatus == PLAYCARD) {
 
@@ -265,6 +277,29 @@ class HandleASession implements Runnable, UnoConstants
 				// send the first discard to the player
 				toPlayer.writeUTF(discardDeck.peekCard().toString()); // UnoPanel:486
 				toPlayer.flush();
+				
+				sendStatus = WILD;
+				
+			} else if (receivedStatus == SKIP) {
+
+				// Send data to client - Card passed should go onto the top of discard
+				int indexReceived = fromPlayer.readInt(); // UnoPanel:489
+
+				// push that card from player's hand to the discardDeck
+				discardDeck.pushCard(player.hand[indexReceived]);
+
+				// take the card out of the server hand
+				player.updateHandAfterPlay(indexReceived);
+
+				// Send the new hand, with one less card
+				toPlayer.writeUTF(player.sendCardsInHand(player.getCardsInHand())); // UnoPanel:492
+				toPlayer.flush();
+
+				// send the first discard to the player
+				toPlayer.writeUTF(discardDeck.peekCard().toString()); // UnoPanel:486
+				toPlayer.flush();
+
+				sendStatus = SKIP;
 			}
 
 
@@ -287,13 +322,6 @@ class HandleASession implements Runnable, UnoConstants
 				sendStatus = DRAW_GAME;
 				continueToPlay = false;
 
-			} else if (discardDeck.peekCard().getColor() == "black") {
-				// wild card was played
-				sendStatus = WILD;
-
-			} else {
-
-				sendStatus = CONTINUE;
 			}
 
 			System.out.println("\nsendStatus- " + sendStatus);

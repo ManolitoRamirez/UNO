@@ -43,6 +43,8 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 		String currentSelectedCard; // should be in the form (color,value)
 		boolean continueToPlay = true;
 		boolean isValidPlay = false;
+		boolean skip = false;
+		boolean skippedOpponent = false;
 		Thread thread;
 		public String colorChosen;
 		public String wildCardColor;
@@ -519,35 +521,47 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 			while (continueToPlay) {
 
 				if (player == PLAYER1) {
+					System.out.println("Player hand:\n" + playersHand);
+					
+					if(!skip)
+					{
+						System.out.print("\nPlayer" + player + " make a move\n");
+						// wait for player 1 to make a move
+						waitForPlayerAction();
 
-			    	System.out.println("Player hand:\n" + playersHand);
-					System.out.print("\nPlayer" + player + " make a move\n");
-					// wait for player 1 to make a move
-					waitForPlayerAction();
+						System.out.print("\nPlayer" + player + " Sending move to server\n");
+						// Send the move to the server
+						sendMove();
+					}
 
-					System.out.print("\nPlayer" + player + " Sending move to server\n");
-					// Send the move to the server
-			        sendMove();
-
-			        System.out.print("\nPlayer" + player + " Waiting to recieve to move from server\n");
-			        // recieve update from server of player2's move
-					receiveInfoFromServer();
+					if(!skippedOpponent)
+					{
+						System.out.print("\nPlayer" + player + " Waiting to recieve to move from server\n");
+			        		// recieve update from server of player2's move
+						receiveInfoFromServer();
+					}
 
 				} else if (player == PLAYER2) {
 
-			    	System.out.println("Player hand:\n" + playersHand);
+					System.out.println("Player hand:\n" + playersHand);
 
-					System.out.print("\nPlayer" + player + " Waiting to recieve to move from server\n");
-					// Receive info from the server
-					receiveInfoFromServer();
+					if(!skippedOpponent)
+					{
+						System.out.print("\nPlayer" + player + " Waiting to recieve to move from server\n");
+			        		// recieve update from server of player2's move
+						receiveInfoFromServer();
+					}
 
-					System.out.print("\nPlayer" + player + " Waiting for player2 to move\n");
-					// Wait for player 2 to move
-					waitForPlayerAction();
+					if(!skip)
+					{
+						System.out.print("\nPlayer" + player + " make a move\n");
+						// wait for player 1 to make a move
+						waitForPlayerAction();
 
-					System.out.print("\nPlayer" + player + " Sending move to server\n");
-					// Send player 2's move to the server
-					sendMove();
+						System.out.print("\nPlayer" + player + " Sending move to server\n");
+						// Send the move to the server
+						sendMove();
+					}
 
 				}
 			}
@@ -570,6 +584,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 	private void sendMove() {
 
+		skippedOpponent = false;
 	    myTurn = false;
 	    drawButton.setEnabled(myTurn);
 		btnPlaythiscard.setEnabled(myTurn);
@@ -579,6 +594,8 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 			status = DRAW_TWO;
 		} else if (currentSelectedCard.contains("wild")) {
 			status = WILD;
+		} else if (currentSelectedCard.contains("skip")) {
+			status = SKIP;
 		}
 
 		/** send the move to the server */
@@ -609,10 +626,10 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 				slider.setMaximum(handSize - 1);
 
 				// ============================== DISPLAY NEW CARDS =========================
-		    	String [] receivedCards = playersHand.split(":");
-		    	String middleCard = receivedCards[receivedCards.length/2];
+		    		String [] receivedCards = playersHand.split(":");
+		    		String middleCard = receivedCards[receivedCards.length/2];
 
-		    	BufferedImage middleCardImage = null;
+		    		BufferedImage middleCardImage = null;
 
 				try {
 
@@ -817,6 +834,75 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 				catch(IOException ex) {
 					ex.printStackTrace();
 				}
+			} else if(status == SKIP) {
+				try {
+					// Send status to server that client wants to play a card
+					toServer.writeInt(SKIP); // UnoServer:176, path:1
+					toServer.flush();
+
+					// send the index of the card to play to the server
+					toServer.writeInt(slider.getValue()); // UnoServer:182
+					toServer.flush();
+
+					// read the new hand after the play
+					playersHand = fromServer.readUTF(); // UnoServer:191
+
+					// displays the "You Win!" if player
+					if (playersHand.split(":").length == 0) {
+						showWinner("You");
+					}
+
+					// get the new topDiscard
+					topDiscardCard = fromServer.readUTF(); // UnoServer:195
+
+					// decrememnt the hand size
+					--handSize;
+					slider.setMaximum(handSize - 1);
+
+					// ============================== DISPLAY NEW CARDS =========================
+			    		String [] receivedCards = playersHand.split(":");
+			    		String middleCard = receivedCards[receivedCards.length/2];
+
+			    		BufferedImage middleCardImage = null;
+
+					try {
+
+						middleCardImage = ImageIO.read(new File("./gameCards/"+middleCard+".jpg"));
+
+					} catch (IOException e) {
+
+					}
+
+					Image theResizedCardImageForMiddleCard =
+							middleCardImage.getScaledInstance(selectedCardLabel.getWidth(), selectedCardLabel.getHeight(),Image.SCALE_DEFAULT);
+
+					ImageIcon theFlippedCardIcon = new ImageIcon(theResizedCardImageForMiddleCard);
+
+					selectedCardLabel.setIcon(theFlippedCardIcon);
+
+					BufferedImage topDiscardCardImage = null;
+
+					try {
+
+						topDiscardCardImage = ImageIO.read(new File("./gameCards/"+topDiscardCard+".jpg"));
+
+					} catch (IOException e) {
+
+					}
+
+					Image theResizedCardImageFortopDiscard =
+							topDiscardCardImage.getScaledInstance(topDiscard.getWidth(), topDiscard.getHeight(),Image.SCALE_DEFAULT);
+
+					ImageIcon topDiscardIcon = new ImageIcon(theResizedCardImageFortopDiscard);
+
+					topDiscard.setIcon(topDiscardIcon);
+					
+					skippedOpponent = true;
+
+				}
+				catch(IOException ex) {
+					ex.printStackTrace();
+				}
 			}
 	}
 
@@ -888,6 +974,10 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 		topDiscard.setIcon(topDiscardIcon);
 
+		if(status == SKIP)
+			skip = true;
+		else
+			skip = false;
 	}
 
 //------------------------------------------------------------------------------------

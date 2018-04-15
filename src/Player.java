@@ -11,7 +11,7 @@ public class Player {
 /* Player constructor */
 	public Player(Unodeck d) {
 		++playerNum;
-		playerName = "Player" + playerNum;
+		playerName = "Player " + playerNum;
 		
 		// initiate hand
 		for (int i = 0; i <= 6; i++) {
