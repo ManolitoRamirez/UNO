@@ -930,12 +930,37 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 		topDiscardCard = fromServer.readUTF();
 		System.out.print("Top discarded Card: " + topDiscardCard);
 
+		BufferedImage topDiscardCardImage = null;
+
+		
+		try {
+
+			topDiscardCardImage = ImageIO.read(new File("./gameCards/"+topDiscardCard+".jpg"));
+
+		} catch (IOException e) {
+
+		}
+
+		Image theResizedCardImageFortopDiscard =
+				topDiscardCardImage.getScaledInstance(topDiscard.getWidth(), topDiscard.getHeight(),Image.SCALE_DEFAULT);
+
+		ImageIcon topDiscardIcon = new ImageIcon(theResizedCardImageFortopDiscard);
+
+		topDiscard.setIcon(topDiscardIcon);
+		
 		// get the new hand of the other player
 		tmp = fromServer.readInt();
 		otherPlayerhandSize.setText(Integer.toString(tmp));
 
 		// ============================== DISPLAY NEW CARDS =========================
     	String [] receivedCards = playersHand.split(":");
+    	slider.setMaximum(receivedCards.length - 1);
+    	for(int i = 0; i < receivedCards.length - 1; i++) {
+    		String[] temp = receivedCards[i].split(",");
+    		if(receivedCards[1].equals("wild")) {
+    			receivedCards[i] = "black,wild";
+    		}
+    	}
     	slider.setMaximum(receivedCards.length - 1);
     	System.out.println(Arrays.toString(receivedCards));
     	String middleCard = receivedCards[receivedCards.length/2];
@@ -956,23 +981,6 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 		ImageIcon theFlippedCardIcon = new ImageIcon(theResizedCardImageForMiddleCard);
 
 		selectedCardLabel.setIcon(theFlippedCardIcon);
-
-		BufferedImage topDiscardCardImage = null;
-
-		try {
-
-			topDiscardCardImage = ImageIO.read(new File("./gameCards/"+topDiscardCard+".jpg"));
-
-		} catch (IOException e) {
-
-		}
-
-		Image theResizedCardImageFortopDiscard =
-				topDiscardCardImage.getScaledInstance(topDiscard.getWidth(), topDiscard.getHeight(),Image.SCALE_DEFAULT);
-
-		ImageIcon topDiscardIcon = new ImageIcon(theResizedCardImageFortopDiscard);
-
-		topDiscard.setIcon(topDiscardIcon);
 
 		if(status == SKIP)
 			skip = true;
