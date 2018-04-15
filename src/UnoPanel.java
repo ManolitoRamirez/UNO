@@ -594,7 +594,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 			status = DRAW_TWO;
 		} else if (currentSelectedCard.contains("wild")) {
 			status = WILD;
-		} else if (currentSelectedCard.contains("skip")) {
+		} else if (currentSelectedCard.contains("skip") || currentSelectedCard.contains("reverse")) {
 			status = SKIP;
 		}
 
