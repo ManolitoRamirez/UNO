@@ -1,3 +1,4 @@
+package core;
 public class Player {
 
 	Unocard[] hand = new Unocard[80];
@@ -53,9 +54,6 @@ public class Player {
 			if (hand[i].getValue() <= 5) {
 				cards[i] = hand[i].getColor() + "," + hand[i].getValue();
 			} else {
-				if(hand[i].getAction() == "wild") {
-					hand[i].setColor("black");
-				}
 				cards[i] = hand[i].getColor() + "," + hand[i].getAction();
 			}
 		}
@@ -95,14 +93,6 @@ public class Player {
 			hand[i] = newHand[i];
 		}
 
-
-	}
-
-// ===================================================================
-
-	public void updateHandAfterDraw() {
-
-		Unocard[] newHand = new Unocard[hand.length - 2];
 
 	}
 
