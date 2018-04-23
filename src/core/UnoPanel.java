@@ -964,24 +964,6 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
     	}
     	slider.setMaximum(receivedCards.length - 1);
     	System.out.println(Arrays.toString(receivedCards));
-    	String middleCard = receivedCards[receivedCards.length/2];
-
-    	BufferedImage middleCardImage = null;
-
-		try {
-
-			middleCardImage = ImageIO.read(new File("./gameCards/"+middleCard+".jpg"));
-
-		} catch (IOException e) {
-
-		}
-
-		Image theResizedCardImageForMiddleCard =
-				middleCardImage.getScaledInstance(selectedCardLabel.getWidth(), selectedCardLabel.getHeight(),Image.SCALE_DEFAULT);
-
-		ImageIcon theFlippedCardIcon = new ImageIcon(theResizedCardImageForMiddleCard);
-
-		selectedCardLabel.setIcon(theFlippedCardIcon);
 
 		if(status == SKIP)
 			skip = true;
@@ -1000,7 +982,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 		    while (waiting) {
 		    	Thread.sleep(100);
 		    }
-
+		    
 	    	waiting = true;
 		}
 
