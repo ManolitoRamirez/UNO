@@ -1,3 +1,4 @@
+package core;
 import java.util.Random;
 
 /* cards 0-5

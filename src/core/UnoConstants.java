@@ -1,3 +1,4 @@
+package core;
 public interface UnoConstants {
 	public static final int PLAYER1 = 1; // Indicate player 1
 	public static final int PLAYER2 = 2; // Indicate player 2

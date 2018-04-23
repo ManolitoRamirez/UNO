@@ -1,3 +1,4 @@
+package core;
 import java.io.*;
 import java.net.*;
 import javax.swing.*;
