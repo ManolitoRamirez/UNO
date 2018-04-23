@@ -3,6 +3,8 @@ import core.*;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -17,7 +19,7 @@ public class TestPlayer
 {
 	Unodeck testDeck;
 	Player testPlayer;
-	
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception 
 	{
@@ -43,29 +45,29 @@ public class TestPlayer
 		testDeck = null;
 		testPlayer = null;
 	}
-	
+
 	@Test
 	public void testHand()
 	{
 		System.out.println("Testing hand size");
 		testPlayer.displayHand();
 		assertEquals(testPlayer.getHandSize(), 7);
-		
+
 		testPlayer.updateHandAfterPlay(6);
 		assertEquals(testPlayer.getHandSize(), 6);
 		testPlayer.displayHand();
-		
+
 		testPlayer.updateHandAfterDraw(new Unocard());
 		assertEquals(testPlayer.getHandSize(), 7);
 		testPlayer.displayHand();
-		
+
 		testPlayer.updateHandAfterPlay(0);
 		assertEquals(testPlayer.getHandSize(), 6);
 		testPlayer.displayHand();
-		
-		System.out.println(testPlayer.getCardsInHand());
+
+		System.out.println(Arrays.toString(testPlayer.getCardsInHand()));
 	}
-	
+
 	@Test
 	public void testSendCardsInHand()
 	{

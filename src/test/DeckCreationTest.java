@@ -37,7 +37,7 @@ public class DeckCreationTest
 	public void testDeckCreation() 
 	{
 		testDeck.fillDeck();
-		
+
 	}
 
 }

@@ -52,14 +52,14 @@ public class TestUnoCard
 		testCard.setValue(1);
 		assertEquals(1, testCard.getValue());
 	}
-	
+
 	@Test
 	public void testColor() 
 	{
 		testCard.setColor("red");
 		assertTrue(testCard.getColor().equals("red"));
 	}
-	
+
 	@Test
 	public void testToString() 
 	{
@@ -69,7 +69,7 @@ public class TestUnoCard
 		testCard.setValue(6);
 		assertTrue(testCard.toString().equals("black,default"));
 	}
-	
+
 	@Test
 	public void testDisplayCard()
 	{

@@ -7,13 +7,13 @@ public class Player {
 	String playerName; // Simply 'Player 1' or 'Player 2'
 	static int playerTurn; // If this is a 0, then it is player 2's turn, if it is a 1, then it is player 1's turn
 
-//===================================================================
+	//===================================================================
 
-/* Player constructor */
+	/* Player constructor */
 	public Player(Unodeck d) {
 		++playerNum;
 		playerName = "Player " + playerNum;
-		
+
 		// initiate hand
 		for (int i = 0; i <= 6; i++) {
 			hand[handSize] = d.popCard();
@@ -22,8 +22,8 @@ public class Player {
 	}
 
 
-//===================================================================
-// Define methods
+	//===================================================================
+	// Define methods
 
 	public void displayHand() {
 		System.out.println("");
@@ -37,14 +37,14 @@ public class Player {
 			}
 		}
 	}
-	
-// ===================================================================
+
+	// ===================================================================
 
 	public int getHandSize(){
 		return handSize;
 	}
 
-// ===================================================================
+	// ===================================================================
 
 	public String [] getCardsInHand(){
 		String [] cards = new String[handSize];
@@ -60,7 +60,7 @@ public class Player {
 		return cards;
 	}
 
-// ===================================================================
+	// ===================================================================
 
 	public String sendCardsInHand(String [] theCards){
 		String CardsInHand = "";
@@ -71,7 +71,7 @@ public class Player {
 	}
 
 
-// ===================================================================
+	// ===================================================================
 	/** update the handSize to have the index passed go away */
 	public void updateHandAfterPlay(int indexToRemove){
 
@@ -96,7 +96,7 @@ public class Player {
 
 	}
 
-// ===================================================================
+	// ===================================================================
 
 
 	public void updateHandAfterDraw(Unocard drawnCard) {
@@ -107,7 +107,7 @@ public class Player {
 	}
 
 
-// ==================================================================
+	// ==================================================================
 	public String getName(){
 		return playerName;
 	}
