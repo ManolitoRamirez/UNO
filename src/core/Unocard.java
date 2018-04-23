@@ -12,60 +12,60 @@ import java.util.Random;
 public class Unocard {
 
 	private String color; // color of the card
-    private int value; // value of the card
-    private Random randomNum;
-    private String action; // action of the card
+	private int value; // value of the card
+	private Random randomNum;
+	private String action; // action of the card
 
 
-    // General Constructor
-    public Unocard() {
-    	color = "black";
-    	value = -1;
-    	action = "default";
-    }
+	// General Constructor
+	public Unocard() {
+		color = "black";
+		value = -1;
+		action = "default";
+	}
 
 
-    //=====================================================
+	//=====================================================
 
-    // Setters and Getters
+	// Setters and Getters
 
-    public String getAction() {
-    	return action;
-    }
+	public String getAction() {
+		return action;
+	}
 
-    public void setAction(String pAction) {
-    	action = pAction;
-    }
+	public void setAction(String pAction) {
+		action = pAction;
+	}
 
-    public int getValue() {
-    	return value;
-    }
+	public int getValue() {
+		return value;
+	}
 
-    public void setValue(int pValue) {
-    	value = pValue;
-    }
+	public void setValue(int pValue) {
+		value = pValue;
+	}
 
-    public String getColor() {
-    	return color;
-    }
+	public String getColor() {
+		return color;
+	}
 
-    public void setColor(String pColor) {
-    	color = pColor;
-    }
+	public void setColor(String pColor) {
+		color = pColor;
+	}
 
-    public String toString() {
-    	if (value < 6) {
-    		return color + "," + value;
-    	} else {
-    		return color + "," + action;
-    	}
-    }
+	public String toString() {
+		if (value < 6) {
+			return color + "," + value;
+		} else {
+			return color + "," + action;
+		}
+	}
 
-    public void displayCard() {
+	public void displayCard() {
 		System.out.print(getColor());
 		if(getValue()>5)System.out.println(","+getAction());
 		else
-		System.out.println(","+getValue());
+			System.out.println(","+getValue());
 	}
 
 } // End UnoCard Class

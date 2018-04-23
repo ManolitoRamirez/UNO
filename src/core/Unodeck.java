@@ -121,8 +121,8 @@ public class Unodeck {
 		deckSize = MAX_DECK_SIZE;
 	}
 
-//==================================================================================
-/* function that shuffles all of the cards */
+	//==================================================================================
+	/* function that shuffles all of the cards */
 	public void shuffleDeck() {
 
 		int count = 0, thoroughness = 200, randCardPos;
@@ -140,22 +140,22 @@ public class Unodeck {
 
 			++count;
 
-			}
-
-
-
 		}
 
-//==================================================================================
-	public void validateStart() {
-	    boolean flag = false;
-	    while (!flag) {
 
-	    	// If an action card, shuffle
-	    	if (deck[deckSize - 1].getValue() > 5) {
-	    		shuffleDeck();
-	        } else flag = true; 					// else exit
-	    }
+
+	}
+
+	//==================================================================================
+	public void validateStart() {
+		boolean flag = false;
+		while (!flag) {
+
+			// If an action card, shuffle
+			if (deck[deckSize - 1].getValue() > 5) {
+				shuffleDeck();
+			} else flag = true; 					// else exit
+		}
 	}
 
 
