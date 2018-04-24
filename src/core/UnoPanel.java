@@ -586,11 +586,11 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 		btnPlaythiscard.setEnabled(myTurn);
 
 		// check to see if action card
-		if (currentSelectedCard.contains("draw two")) {
+		if (currentSelectedCard.contains("draw two") && status != DRAW) {
 			status = DRAW_TWO;
-		} else if (currentSelectedCard.contains("wild")) {
+		} else if (currentSelectedCard.contains("wild") && status != DRAW) {
 			status = WILD;
-		} else if (currentSelectedCard.contains("skip") || currentSelectedCard.contains("reverse")) {
+		} else if (currentSelectedCard.contains("skip") && status != DRAW || currentSelectedCard.contains("reverse") && status != DRAW) {
 			status = SKIP;
 		}
 
