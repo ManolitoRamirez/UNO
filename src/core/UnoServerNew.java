@@ -378,34 +378,6 @@ class HandleASession implements Runnable, UnoConstants
 	}
 
 	//============================================================
-	public void checkAction(Player player, Player opponent, int index, Unodeck d, DataOutputStream toOpponent, DataOutputStream toPlayer) {
-		try {
-			// if draw two card
-			if (player.hand[index].getAction() == "draw two") {
-
-				opponent.displayHand();
-
-				opponent.updateHandAfterDraw(d.popCard());
-				opponent.updateHandAfterDraw(d.popCard());
-
-				opponent.displayHand();
-
-
-				// send the new hand
-				toOpponent.writeUTF(opponent.sendCardsInHand(opponent.getCardsInHand()));
-				toOpponent.flush();
-
-				// send the new hand size
-				toPlayer.writeInt(opponent.getHandSize());
-				toOpponent.flush();
-			}
-		} catch (IOException e) {
-
-		}
-	}
-
-
-	//============================================================
 
 	// test KAS 11/27
 	public void sendInitial(DataInputStream fromPlayer, DataOutputStream toPlayer, int opponentCardAmt,
