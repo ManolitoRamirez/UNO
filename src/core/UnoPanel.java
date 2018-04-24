@@ -610,7 +610,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 				playersHand = fromServer.readUTF(); // UnoServer:191
 
 				// displays the "You Win!" if player
-				if (playersHand.split(":").length == 0) {
+				if (playersHand.equals("")) {
 					showWinner("You");
 				}
 
@@ -697,7 +697,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 				playersHand = fromServer.readUTF(); // UnoServer:191
 
 				// displays the "You Win!" if player
-				if (playersHand.split(":").length == 0) {
+				if (playersHand.equals("")) {
 					showWinner("You");
 				}
 
@@ -768,7 +768,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 				playersHand = fromServer.readUTF(); // UnoServer:191
 
 				// displays the "You Win!" if player
-				if (playersHand.split(":").length == 0) {
+				if (playersHand.equals("")) {
 					showWinner("You");
 				}
 
@@ -830,7 +830,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 				playersHand = fromServer.readUTF(); // UnoServer:191
 
 				// displays the "You Win!" if player
-				if (playersHand.split(":").length == 0) {
+				if (playersHand.equals("")) {
 					showWinner("You");
 				}
 
