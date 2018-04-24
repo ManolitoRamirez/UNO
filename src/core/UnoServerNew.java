@@ -223,7 +223,7 @@ class HandleASession implements Runnable, UnoConstants
 
 			// updates the player's hand on the server
 			player.updateHandAfterDraw(drawDeck.popCard());
-
+			
 			// send the card in the hand as a string
 			toPlayer.writeUTF(player.sendCardsInHand(player.getCardsInHand())); // UnoPanel:511
 			toPlayer.flush();
