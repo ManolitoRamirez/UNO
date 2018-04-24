@@ -293,13 +293,13 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 				if (response == JOptionPane.NO_OPTION) {
 					System.out.println("No button clicked");
 				} else if (response == JOptionPane.YES_OPTION) {
-					System.exit(0);
 					try {
 						toServer.writeBoolean(false);
 						toServer.flush();
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
+					System.exit(0);
 				} else if (response == JOptionPane.CLOSED_OPTION) {
 					System.out.println("JOptionPane closed");
 				} // End of close dialog code
@@ -518,7 +518,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 				if (player == PLAYER1) {
 					System.out.println("Player hand:\n" + playersHand);
-
+					slider.setMaximum(playersHand.split(":").length - 1);
 					if(!skip)
 					{
 						System.out.print("\nPlayer" + player + " make a move\n");
@@ -540,6 +540,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 				} else if (player == PLAYER2) {
 
 					System.out.println("Player hand:\n" + playersHand);
+					slider.setMaximum(playersHand.split(":").length - 1);
 
 					if(!skippedOpponent)
 					{
@@ -617,10 +618,6 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 				// get the new topDiscard
 				topDiscardCard = fromServer.readUTF(); // UnoServer:195
 
-				// decrememnt the hand size
-				--handSize;
-				slider.setMaximum(handSize - 1);
-
 				// ============================== DISPLAY NEW CARDS =========================
 				String [] receivedCards = playersHand.split(":");
 				String middleCard = receivedCards[receivedCards.length/2];
@@ -675,10 +672,6 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 				// test to see if they hand updated correctly
 				System.out.println("Cards read from server after draw: " + playersHand);
 
-				// increase the slider to
-				++handSize;
-				slider.setMaximum(handSize - 1);
-
 			}
 			catch(IOException ex) {
 				ex.printStackTrace();
@@ -695,7 +688,9 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 				// read the new hand after the play
 				playersHand = fromServer.readUTF(); // UnoServer:191
-
+				
+				slider.setMaximum(playersHand.split(":").length - 1);
+				
 				// displays the "You Win!" if player
 				if (playersHand.equals("")) {
 					showWinner("You");
@@ -703,10 +698,6 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 				// get the new topDiscard
 				topDiscardCard = fromServer.readUTF(); // UnoServer:195
-
-				// decrememnt the hand size
-				--handSize;
-				slider.setMaximum(handSize - 1);
 
 				// read opponents hand size
 				int tmp = fromServer.readInt();
@@ -775,10 +766,6 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 				// get the new topDiscard
 				topDiscardCard = fromServer.readUTF(); // UnoServer:195
 
-				// decrememnt the hand size
-				--handSize;
-				slider.setMaximum(handSize);
-
 				// ============================== DISPLAY NEW CARDS =========================
 				String [] receivedCards = playersHand.split(":");
 				String middleCard = receivedCards[receivedCards.length/2];
@@ -837,10 +824,6 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 				// get the new topDiscard
 				topDiscardCard = fromServer.readUTF(); // UnoServer:195
 
-				// decrememnt the hand size
-				--handSize;
-				slider.setMaximum(handSize - 1);
-
 				// ============================== DISPLAY NEW CARDS =========================
 				String [] receivedCards = playersHand.split(":");
 				String middleCard = receivedCards[receivedCards.length/2];
@@ -894,6 +877,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 		myTurn = false;
 
 		playersHand = fromServer.readUTF();
+		slider.setMaximum(playersHand.split(":").length - 1);
 
 		status = fromServer.readInt();
 		System.out.println("STATUS_CODE: " + status);
@@ -939,7 +923,6 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 				receivedCards[i] = "black,wild";
 			}
 		}
-		slider.setMaximum(receivedCards.length - 1);
 		System.out.println(Arrays.toString(receivedCards));
 
 		if(status == SKIP)
@@ -1052,6 +1035,8 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 			// recieves the players delt hand
 			playersHand = fromServer.readUTF(); // UnoServer:283
+			
+			slider.setMaximum(playersHand.split(":").length - 1);
 			System.out.println("Player hand:\n" + playersHand);
 
 			// ============================== DISPLAY INITIAL CARDS =========================
