@@ -149,7 +149,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 		GameBoardPanel.add(otherPlayerName);
 
 		// other player hand size
-		otherPlayerhandSize = new JLabel("handSize");
+		otherPlayerhandSize = new JLabel("");
 		otherPlayerhandSize.setForeground(Color.WHITE);
 		otherPlayerhandSize.setBounds(451, 102, 61, 16);
 		GameBoardPanel.add(otherPlayerhandSize);

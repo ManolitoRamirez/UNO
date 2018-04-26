@@ -10,7 +10,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * Tests the UnoCard class.
+ * Tests the Unocard class.
+ * 
  * @author Ryan Kirmis
  */
 public class TestUnoCard 
@@ -27,18 +28,29 @@ public class TestUnoCard
 	{
 	}
 
+	/**
+	 * Creating a test card.
+	 * @throws Exception
+	 */
 	@Before
 	public void setUp() throws Exception 
 	{
 		testCard = new Unocard();
 	}
 
+	/**
+	 * Removing the test card.
+	 * @throws Exception
+	 */
 	@After
 	public void tearDown() throws Exception 
 	{
 		testCard = null;
 	}
 
+	/**
+	 * Testing the set/get action methods.
+	 */
 	@Test
 	public void testAction() 
 	{
@@ -46,6 +58,9 @@ public class TestUnoCard
 		assertTrue(testCard.getAction().equals("wild"));
 	}
 
+	/**
+	 * Testing the set/get value methods.
+	 */
 	@Test
 	public void testValue() 
 	{
@@ -53,6 +68,9 @@ public class TestUnoCard
 		assertEquals(1, testCard.getValue());
 	}
 
+	/**
+	 * Testing the set/get color methods.
+	 */
 	@Test
 	public void testColor() 
 	{
@@ -60,6 +78,9 @@ public class TestUnoCard
 		assertTrue(testCard.getColor().equals("red"));
 	}
 
+	/**
+	 * Testing the toString() method.
+	 */
 	@Test
 	public void testToString() 
 	{
@@ -70,6 +91,9 @@ public class TestUnoCard
 		assertTrue(testCard.toString().equals("black,default"));
 	}
 
+	/**
+	 * Testing the displayCard() method.
+	 */
 	@Test
 	public void testDisplayCard()
 	{
