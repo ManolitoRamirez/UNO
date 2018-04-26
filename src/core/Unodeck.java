@@ -19,7 +19,7 @@ public class Unodeck {
 	//==================================================================================
 
 	public Unocard peekCard() {
-		return deck[deckSize]; // deckSize - 1
+		return deck[deckSize-1]; // deckSize - 1
 	}
 
 	//==================================================================================
@@ -32,7 +32,7 @@ public class Unodeck {
 	//==================================================================================
 
 	public void pushCard(Unocard c) {
-		deck[deckSize + 1] = c;
+		deck[deckSize] = c;
 		deckSize++;
 	}
 
