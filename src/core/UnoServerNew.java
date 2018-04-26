@@ -163,10 +163,10 @@ class HandleASession implements Runnable, UnoConstants
 
 				while (continueToPlay) {
 					// get the play from player1
-					if(!skippedPlayer1)
+					if(!skippedPlayer1) {
 						turn = UnoConstants.PLAYER1;
 						play(player1, player2, fromPlayer1, toPlayer1, discardDeck, drawDeck, toPlayer2);
-
+					}
 					skippedPlayer1 = false;
 
 					// check to see if player1's move ends game
@@ -174,10 +174,10 @@ class HandleASession implements Runnable, UnoConstants
 						break;
 
 					// get the play from player2
-					if(!skippedPlayer2)
+					if(!skippedPlayer2) {
 						turn = UnoConstants.PLAYER2;
 						play(player2, player1, fromPlayer2, toPlayer2, discardDeck, drawDeck, toPlayer1);
-
+					}
 					skippedPlayer2 = false;
 				}
 			}
