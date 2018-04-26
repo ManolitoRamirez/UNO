@@ -381,7 +381,7 @@ class HandleASession implements Runnable, UnoConstants
 
 			} else {
 
-				// if opponent played card, send to the player, card that is tobe checked against
+				// if opponent played card, send to the player, card that is to be checked against
 				toOpponent.writeUTF(discardDeck.peekCard().toString());
 
 				toOpponent.writeInt(newHandSize);

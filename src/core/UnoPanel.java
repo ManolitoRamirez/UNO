@@ -932,6 +932,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 				skip = true;
 			else
 				skip = false;
+
 		} else {
 			continueToPlay = false;
 		}
@@ -1103,7 +1104,15 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 	// if condition to check to see if it is win lose or tie
 	public void checkStatus(int newStatus) {
 
-		if (newStatus == PLAYER1_WON) {
+		if(newStatus == PLAYER1_WON && player == PLAYER1) {
+			continueToPlay = false;
+			showWinner("You");
+
+		} else if(newStatus == PLAYER2_WON && player == PLAYER2) {
+			continueToPlay = false;
+			showWinner("You");
+
+		} else if (newStatus == PLAYER1_WON) {
 
 			continueToPlay = false;
 			System.out.println("PLAYER1_WON");
