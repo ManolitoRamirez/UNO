@@ -106,6 +106,8 @@ class HandleASession implements Runnable, UnoConstants
 	private boolean continueToPlay = true;
 	private boolean skippedPlayer1 = false;
 	private boolean skippedPlayer2 = false;
+	
+	private int turn = UnoConstants.PLAYER1;
 
 	// Declare Players
 	public Player player1; // new Player(drawDeck);
@@ -161,9 +163,10 @@ class HandleASession implements Runnable, UnoConstants
 
 				while (continueToPlay) {
 					// get the play from player1
-					if(!skippedPlayer1)
+					if(!skippedPlayer1) {
+						turn = UnoConstants.PLAYER1;
 						play(player1, player2, fromPlayer1, toPlayer1, discardDeck, drawDeck, toPlayer2);
-
+					}
 					skippedPlayer1 = false;
 
 					// check to see if player1's move ends game
@@ -171,9 +174,10 @@ class HandleASession implements Runnable, UnoConstants
 						break;
 
 					// get the play from player2
-					if(!skippedPlayer2)
+					if(!skippedPlayer2) {
+						turn = UnoConstants.PLAYER2;
 						play(player2, player1, fromPlayer2, toPlayer2, discardDeck, drawDeck, toPlayer1);
-
+					}
 					skippedPlayer2 = false;
 				}
 			}
@@ -191,189 +195,207 @@ class HandleASession implements Runnable, UnoConstants
 			DataOutputStream toPlayer, Unodeck discardDeck, Unodeck drawDeck, DataOutputStream toOpponent)  throws IOException {
 
 		int sendStatus = CONTINUE;
-		// get the value for what button the player choose, (draw(3) or play(4)).
-		int receivedStatus = fromPlayer.readInt(); // UnoServer:482 | UnoServer:511, respective to status
+		try {
+			// get the value for what button the player choose, (draw(3) or play(4)).
+			int receivedStatus = fromPlayer.readInt(); // UnoServer:482 | UnoServer:511, respective to status
 
-		if(receivedStatus == SKIP && player.playerName.equals("Player 1"))
-			skippedPlayer2 = true;
-		else if(receivedStatus == SKIP && player.playerName.equals("Player 2"))
-			skippedPlayer1 = true;
+			if(receivedStatus == SKIP && player.playerName.equals("Player 1"))
+				skippedPlayer2 = true;
+			else if(receivedStatus == SKIP && player.playerName.equals("Player 2"))
+				skippedPlayer1 = true;
 
-		// run this if they want to play a card
-		if (receivedStatus == PLAYCARD) {
+			// run this if they want to play a card
+			if (receivedStatus == PLAYCARD) {
 
-			// Send data to client - Card passed should go onto the top of discard
-			int indexReceived = fromPlayer.readInt(); // UnoPanel:489
+				// Send data to client - Card passed should go onto the top of discard
+				int indexReceived = fromPlayer.readInt(); // UnoPanel:489
 
-			// push that card from player's hand to the discardDeck
-			discardDeck.pushCard(player.hand[indexReceived]);
+				// push that card from player's hand to the discardDeck
+				discardDeck.pushCard(player.hand[indexReceived]);
 
-			// take the card out of the server hand
-			player.updateHandAfterPlay(indexReceived);
+				// take the card out of the server hand
+				player.updateHandAfterPlay(indexReceived);
 
-			// Send the new hand, with one less card
-			toPlayer.writeUTF(player.sendCardsInHand(player.getCardsInHand())); // UnoPanel:492
-			toPlayer.flush();
+				// Send the new hand, with one less card
+				toPlayer.writeUTF(player.sendCardsInHand(player.getCardsInHand())); // UnoPanel:492
+				toPlayer.flush();
 
-			// send the first discard to the player
-			toPlayer.writeUTF(discardDeck.peekCard().toString()); // UnoPanel:486
-			toPlayer.flush();
+				// send the first discard to the player
+				toPlayer.writeUTF(discardDeck.peekCard().toString()); // UnoPanel:486
+				toPlayer.flush();
 
-		} else if(receivedStatus == DRAW) {
+			} else if(receivedStatus == DRAW) {
 
-			// updates the player's hand on the server
-			player.updateHandAfterDraw(drawDeck.popCard());
-			
-			// send the card in the hand as a string
-			toPlayer.writeUTF(player.sendCardsInHand(player.getCardsInHand())); // UnoPanel:511
-			toPlayer.flush();
+				// updates the player's hand on the server
+				player.updateHandAfterDraw(drawDeck.popCard());
 
-		} else if (receivedStatus == DRAW_TWO) {
+				// send the card in the hand as a string
+				toPlayer.writeUTF(player.sendCardsInHand(player.getCardsInHand())); // UnoPanel:511
+				toPlayer.flush();
 
-			// Send data to client - Card passed should go onto the top of discard
-			int indexReceived = fromPlayer.readInt();
+			} else if (receivedStatus == DRAW_TWO) {
 
-			// push that card from player's hand to the discardDeck
-			discardDeck.pushCard(player.hand[indexReceived]);
+				// Send data to client - Card passed should go onto the top of discard
+				int indexReceived = fromPlayer.readInt();
 
-			// take the card out of the server hand
-			player.updateHandAfterPlay(indexReceived);
+				// push that card from player's hand to the discardDeck
+				discardDeck.pushCard(player.hand[indexReceived]);
 
-			// Send the new hand, with one less card
-			toPlayer.writeUTF(player.sendCardsInHand(player.getCardsInHand())); // UnoPanel:492
-			toPlayer.flush();
+				// take the card out of the server hand
+				player.updateHandAfterPlay(indexReceived);
 
-			// send the first discard to the player
-			toPlayer.writeUTF(discardDeck.peekCard().toString()); // UnoPanel:486
-			toPlayer.flush();
+				// Send the new hand, with one less card
+				toPlayer.writeUTF(player.sendCardsInHand(player.getCardsInHand())); // UnoPanel:492
+				toPlayer.flush();
 
-			// draw 2 cards
-			opponent.updateHandAfterDraw(drawDeck.popCard());
-			opponent.updateHandAfterDraw(drawDeck.popCard());
+				// send the first discard to the player
+				toPlayer.writeUTF(discardDeck.peekCard().toString()); // UnoPanel:486
+				toPlayer.flush();
 
-			// send the hands size
-			toPlayer.writeInt(opponent.getHandSize());
-			toPlayer.flush();
+				// draw 2 cards
+				opponent.updateHandAfterDraw(drawDeck.popCard());
+				opponent.updateHandAfterDraw(drawDeck.popCard());
 
-		} else if (receivedStatus == WILD) {
-			System.out.println("in the play function, entered the while if ");
-			// Read the color chosen by the player for the wild card played
-			String colorChosen = fromPlayer.readUTF();
+				// send the hands size
+				toPlayer.writeInt(opponent.getHandSize());
+				toPlayer.flush();
 
-			// Send data to client - Card passed should go onto the top of discard
-			int indexReceived = fromPlayer.readInt(); // UnoPanel:489
+			} else if (receivedStatus == WILD) {
+				System.out.println("in the play function, entered the while if ");
+				// Read the color chosen by the player for the wild card played
+				String colorChosen = fromPlayer.readUTF();
 
-			// push that card from player's hand to the discardDeck
-			System.out.println("color sent from the client " + colorChosen);
-			System.out.println("Card before switch " + player.hand[indexReceived]);
+				// Send data to client - Card passed should go onto the top of discard
+				int indexReceived = fromPlayer.readInt(); // UnoPanel:489
 
-			player.hand[indexReceived].setColor(colorChosen);
+				// push that card from player's hand to the discardDeck
+				System.out.println("color sent from the client " + colorChosen);
+				System.out.println("Card before switch " + player.hand[indexReceived]);
 
-			System.out.println("Card after switch " + player.hand[indexReceived]);
+				player.hand[indexReceived].setColor(colorChosen);
 
-			discardDeck.pushCard(player.hand[indexReceived]);
+				System.out.println("Card after switch " + player.hand[indexReceived]);
 
-			// take the card out of the server hand
-			player.updateHandAfterPlay(indexReceived);
+				discardDeck.pushCard(player.hand[indexReceived]);
 
-			// Send the new hand, with one less card
-			toPlayer.writeUTF(player.sendCardsInHand(player.getCardsInHand())); // UnoPanel:492
-			toPlayer.flush();
+				// take the card out of the server hand
+				player.updateHandAfterPlay(indexReceived);
 
-			// send the first discard to the player
-			toPlayer.writeUTF(discardDeck.peekCard().toString()); // UnoPanel:486
-			toPlayer.flush();
+				// Send the new hand, with one less card
+				toPlayer.writeUTF(player.sendCardsInHand(player.getCardsInHand())); // UnoPanel:492
+				toPlayer.flush();
 
-			sendStatus = WILD;
+				// send the first discard to the player
+				toPlayer.writeUTF(discardDeck.peekCard().toString()); // UnoPanel:486
+				toPlayer.flush();
 
-		} else if (receivedStatus == SKIP) {
+				sendStatus = WILD;
 
-			// Send data to client - Card passed should go onto the top of discard
-			int indexReceived = fromPlayer.readInt(); // UnoPanel:489
+			} else if (receivedStatus == SKIP) {
 
-			// push that card from player's hand to the discardDeck
-			discardDeck.pushCard(player.hand[indexReceived]);
+				// Send data to client - Card passed should go onto the top of discard
+				int indexReceived = fromPlayer.readInt(); // UnoPanel:489
 
-			// take the card out of the server hand
-			player.updateHandAfterPlay(indexReceived);
+				// push that card from player's hand to the discardDeck
+				discardDeck.pushCard(player.hand[indexReceived]);
 
-			// Send the new hand, with one less card
-			toPlayer.writeUTF(player.sendCardsInHand(player.getCardsInHand())); // UnoPanel:492
-			toPlayer.flush();
+				// take the card out of the server hand
+				player.updateHandAfterPlay(indexReceived);
 
-			// send the first discard to the player
-			toPlayer.writeUTF(discardDeck.peekCard().toString()); // UnoPanel:486
-			toPlayer.flush();
+				// Send the new hand, with one less card
+				toPlayer.writeUTF(player.sendCardsInHand(player.getCardsInHand())); // UnoPanel:492
+				toPlayer.flush();
 
-			sendStatus = SKIP;
+				// send the first discard to the player
+				toPlayer.writeUTF(discardDeck.peekCard().toString()); // UnoPanel:486
+				toPlayer.flush();
+
+				sendStatus = SKIP;
+			}
+
+
+
+
+			// check to see if anyone has won
+			if (player1.getHandSize() <= 0) {
+				// all of player1's cards are gone, they win!
+				sendStatus = PLAYER1_WON;
+				continueToPlay = false;
+
+			} else if (player2.getHandSize() <= 0) {
+
+				// all of player2's cards are gone, they win!
+				sendStatus = PLAYER2_WON;
+				continueToPlay = false;
+
+			} else if (drawDeck.deckSize == 0 || drawDeck.deckSize == 1) {
+
+				sendStatus = DRAW_GAME;
+				continueToPlay = false;
+
+			}
+
+			System.out.println("\nsendStatus- " + sendStatus);
+		} catch(Exception e) {
+			toOpponent.writeUTF("");
+			if(turn == UnoConstants.PLAYER1)
+			{
+				toOpponent.writeInt(UnoConstants.PLAYER2_WON);
+			} else {
+				toOpponent.writeInt(UnoConstants.PLAYER1_WON);
+			}
 		}
-
-
-
-
-		// check to see if anyone has won
-		if (player1.getHandSize() <= 0) {
-			// all of player1's cards are gone, they win!
-			sendStatus = PLAYER1_WON;
-			continueToPlay = false;
-
-		} else if (player2.getHandSize() <= 0) {
-
-			// all of player2's cards are gone, they win!
-			sendStatus = PLAYER2_WON;
-			continueToPlay = false;
-
-		} else if (drawDeck.deckSize == 0 || drawDeck.deckSize == 1) {
-
-			sendStatus = DRAW_GAME;
-			continueToPlay = false;
-
-		}
-
-		System.out.println("\nsendStatus- " + sendStatus);
-
 		// send the PLAY to the opponent
-		sendMove(toOpponent, discardDeck, player.getHandSize(), sendStatus, opponent);
+		sendMove(toOpponent, discardDeck, player.getHandSize(), sendStatus, opponent, toPlayer);
 	}
 
 	//============================================================
 
 	// overload send play for play
-	private void sendMove(DataOutputStream toOpponent, Unodeck discardDeck, int newHandSize, int status, Player opponent) throws IOException {
+	private void sendMove(DataOutputStream toOpponent, Unodeck discardDeck, int newHandSize, int status, Player opponent, DataOutputStream toPlayer) throws IOException {
+		try {
 
-
-		// send opponent their hand
-		toOpponent.writeUTF(opponent.sendCardsInHand(opponent.getCardsInHand()));
-		toOpponent.flush();
-
-		// SENDS THE STATUS OF THE GAME
-		System.out.println("STATUS_CODE: " + status);
-		toOpponent.writeInt(status);
-
-
-
-
-
-		if (status == PLAYER1_WON) {
-
-			System.out.println("PLAYER1 Won");
-
-		} else if (status == PLAYER2_WON) {
-
-			System.out.println("PLAYER2 Won");
-
-		} else if (status == DRAW_GAME) {
-
-			System.out.println("DRAW");
-
-		} else {
-
-			// if opponent played card, send to the player, card that is tobe checked against
-			toOpponent.writeUTF(discardDeck.peekCard().toString());
-
-			toOpponent.writeInt(newHandSize);
+			// send opponent their hand
+			toOpponent.writeUTF(opponent.sendCardsInHand(opponent.getCardsInHand()));
 			toOpponent.flush();
 
+			// SENDS THE STATUS OF THE GAME
+			System.out.println("STATUS_CODE: " + status);
+			toOpponent.writeInt(status);
+
+
+
+
+
+			if (status == PLAYER1_WON) {
+
+				System.out.println("PLAYER1 Won");
+
+			} else if (status == PLAYER2_WON) {
+
+				System.out.println("PLAYER2 Won");
+
+			} else if (status == DRAW_GAME) {
+
+				System.out.println("DRAW");
+
+			} else {
+
+				// if opponent played card, send to the player, card that is tobe checked against
+				toOpponent.writeUTF(discardDeck.peekCard().toString());
+
+				toOpponent.writeInt(newHandSize);
+				toOpponent.flush();
+
+			}
+		} catch(Exception e) {
+			toPlayer.writeUTF("");
+			if(turn == UnoConstants.PLAYER1)
+			{
+				toPlayer.writeInt(UnoConstants.PLAYER2_WON);
+			} else {
+				toPlayer.writeInt(UnoConstants.PLAYER1_WON);
+			}
 		}
 	}
 

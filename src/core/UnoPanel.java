@@ -431,71 +431,74 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				// should return the card in the hand @ that pos
-				String [] cardsInHand = playersHand.split(":");
-				if(slider.getValue() <= cardsInHand.length - 1) {
-					currentSelectedCard = cardsInHand[slider.getValue()];
-				}
+				if(continueToPlay) {
+					String [] cardsInHand = playersHand.split(":");
+					if(slider.getValue() <= cardsInHand.length - 1) {
+						currentSelectedCard = cardsInHand[slider.getValue()];
+					}
 
-				// print the current selected card
-				System.out.println(currentSelectedCard);
+					// print the current selected card
+					System.out.println(currentSelectedCard);
 
-				BufferedImage selectedCardImage = null;
+					BufferedImage selectedCardImage = null;
 
-				try {
-
-					selectedCardImage = ImageIO.read(new File("./gameCards/"+currentSelectedCard+".jpg"));
-
-				} catch (IOException e1) {
-
-				}
-
-				Image theResizedCardImageForSelectedCard =
-						selectedCardImage.getScaledInstance(selectedCardLabel.getWidth(), selectedCardLabel.getHeight(),Image.SCALE_DEFAULT);
-				ImageIcon theSelectedCardIcon = new ImageIcon(theResizedCardImageForSelectedCard);
-
-				selectedCardLabel.setIcon(theSelectedCardIcon);
-
-				if(slider.getValue() == 0)
-				{
-					GameBoardPanel.remove(leftCard);
-					GameBoardPanel.updateUI();
-				}
-				else
-				{
 					try {
 
-						selectedCardImage = ImageIO.read(new File("./gameCards/"+cardsInHand[slider.getValue() - 1]+".jpg"));
+						selectedCardImage = ImageIO.read(new File("./gameCards/"+currentSelectedCard+".jpg"));
 
 					} catch (IOException e1) {
 
 					}
-					theResizedCardImageForSelectedCard = selectedCardImage.getScaledInstance(selectedCardLabel.getWidth(), selectedCardLabel.getHeight(),Image.SCALE_DEFAULT);
-					theSelectedCardIcon = new ImageIcon(theResizedCardImageForSelectedCard);
-					leftCard.setIcon(theSelectedCardIcon);
-					GameBoardPanel.add(leftCard);
-					GameBoardPanel.updateUI();
-				}
-				if(slider.getValue() == cardsInHand.length - 1)
-				{
-					GameBoardPanel.remove(rightCard);
-					GameBoardPanel.updateUI();
-				}
-				else
-				{
-					try {
 
-						selectedCardImage = ImageIO.read(new File("./gameCards/"+cardsInHand[slider.getValue() + 1]+".jpg"));
+					Image theResizedCardImageForSelectedCard =
+							selectedCardImage.getScaledInstance(selectedCardLabel.getWidth(), selectedCardLabel.getHeight(),Image.SCALE_DEFAULT);
+					ImageIcon theSelectedCardIcon = new ImageIcon(theResizedCardImageForSelectedCard);
 
-					} catch (IOException e1) {
+					selectedCardLabel.setIcon(theSelectedCardIcon);
 
+					if(slider.getValue() == 0)
+					{
+						GameBoardPanel.remove(leftCard);
+						GameBoardPanel.updateUI();
 					}
-					theResizedCardImageForSelectedCard = selectedCardImage.getScaledInstance(selectedCardLabel.getWidth(), selectedCardLabel.getHeight(),Image.SCALE_DEFAULT);
-					theSelectedCardIcon = new ImageIcon(theResizedCardImageForSelectedCard);
-					rightCard.setIcon(theSelectedCardIcon);
-					GameBoardPanel.add(rightCard);
-					GameBoardPanel.updateUI();
-				}
+					else
+					{
+						try {
+
+							selectedCardImage = ImageIO.read(new File("./gameCards/"+cardsInHand[slider.getValue() - 1]+".jpg"));
+
+						} catch (IOException e1) {
+
+						}
+						theResizedCardImageForSelectedCard = selectedCardImage.getScaledInstance(selectedCardLabel.getWidth(), selectedCardLabel.getHeight(),Image.SCALE_DEFAULT);
+						theSelectedCardIcon = new ImageIcon(theResizedCardImageForSelectedCard);
+						leftCard.setIcon(theSelectedCardIcon);
+						GameBoardPanel.add(leftCard);
+						GameBoardPanel.updateUI();
+					}
+					if(slider.getValue() == cardsInHand.length - 1)
+					{
+						GameBoardPanel.remove(rightCard);
+						GameBoardPanel.updateUI();
+					}
+					else
+					{
+						try {
+
+							selectedCardImage = ImageIO.read(new File("./gameCards/"+cardsInHand[slider.getValue() + 1]+".jpg"));
+
+						} catch (IOException e1) {
+
+						}
+						theResizedCardImageForSelectedCard = selectedCardImage.getScaledInstance(selectedCardLabel.getWidth(), selectedCardLabel.getHeight(),Image.SCALE_DEFAULT);
+						theSelectedCardIcon = new ImageIcon(theResizedCardImageForSelectedCard);
+						rightCard.setIcon(theSelectedCardIcon);
+						GameBoardPanel.add(rightCard);
+						GameBoardPanel.updateUI();
+					}
+				} 
 			}
+
 		});
 
 
@@ -519,7 +522,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 				if (player == PLAYER1) {
 					System.out.println("Player hand:\n" + playersHand);
 					slider.setMaximum(playersHand.split(":").length - 1);
-					if(!skip)
+					if(!skip && continueToPlay)
 					{
 						System.out.print("\nPlayer" + player + " make a move\n");
 						// wait for player 1 to make a move
@@ -530,7 +533,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 						sendMove();
 					}
 
-					if(!skippedOpponent)
+					if(!skippedOpponent && continueToPlay)
 					{
 						System.out.print("\nPlayer" + player + " Waiting to recieve to move from server\n");
 						// recieve update from server of player2's move
@@ -542,14 +545,14 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 					System.out.println("Player hand:\n" + playersHand);
 					slider.setMaximum(playersHand.split(":").length - 1);
 
-					if(!skippedOpponent)
+					if(!skippedOpponent && continueToPlay)
 					{
 						System.out.print("\nPlayer" + player + " Waiting to recieve to move from server\n");
 						// recieve update from server of player2's move
 						receiveInfoFromServer();
 					}
 
-					if(!skip)
+					if(!skip && continueToPlay)
 					{
 						System.out.print("\nPlayer" + player + " make a move\n");
 						// wait for player 1 to make a move
@@ -688,9 +691,9 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 				// read the new hand after the play
 				playersHand = fromServer.readUTF(); // UnoServer:191
-				
+
 				slider.setMaximum(playersHand.split(":").length - 1);
-				
+
 				// displays the "You Win!" if player
 				if (playersHand.equals("")) {
 					showWinner("You");
@@ -877,58 +880,61 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 		myTurn = false;
 
 		playersHand = fromServer.readUTF();
-		slider.setMaximum(playersHand.split(":").length - 1);
 
 		status = fromServer.readInt();
 		System.out.println("STATUS_CODE: " + status);
 
 		checkStatus(status);
+		if(continueToPlay) {
+			slider.setMaximum(playersHand.split(":").length - 1);
+			drawButton.setEnabled(myTurn);
+			btnPlaythiscard.setEnabled(myTurn);
+			int tmp = 0;
 
-		drawButton.setEnabled(myTurn);
-		btnPlaythiscard.setEnabled(myTurn);
-		int tmp = 0;
+			// get the play from the user
+			topDiscardCard = fromServer.readUTF();
+			System.out.print("Top discarded Card: " + topDiscardCard);
 
-		// get the play from the user
-		topDiscardCard = fromServer.readUTF();
-		System.out.print("Top discarded Card: " + topDiscardCard);
-
-		BufferedImage topDiscardCardImage = null;
+			BufferedImage topDiscardCardImage = null;
 
 
-		try {
+			try {
 
-			topDiscardCardImage = ImageIO.read(new File("./gameCards/"+topDiscardCard+".jpg"));
+				topDiscardCardImage = ImageIO.read(new File("./gameCards/"+topDiscardCard+".jpg"));
 
-		} catch (IOException e) {
+			} catch (IOException e) {
 
-		}
-
-		Image theResizedCardImageFortopDiscard =
-				topDiscardCardImage.getScaledInstance(topDiscard.getWidth(), topDiscard.getHeight(),Image.SCALE_DEFAULT);
-
-		ImageIcon topDiscardIcon = new ImageIcon(theResizedCardImageFortopDiscard);
-
-		topDiscard.setIcon(topDiscardIcon);
-
-		// get the new hand of the other player
-		tmp = fromServer.readInt();
-		otherPlayerhandSize.setText(Integer.toString(tmp));
-
-		// ============================== DISPLAY NEW CARDS =========================
-		String [] receivedCards = playersHand.split(":");
-		slider.setMaximum(receivedCards.length - 1);
-		for(int i = 0; i < receivedCards.length - 1; i++) {
-			String[] temp = receivedCards[i].split(",");
-			if(receivedCards[1].equals("wild")) {
-				receivedCards[i] = "black,wild";
 			}
-		}
-		System.out.println(Arrays.toString(receivedCards));
 
-		if(status == SKIP)
-			skip = true;
-		else
-			skip = false;
+			Image theResizedCardImageFortopDiscard =
+					topDiscardCardImage.getScaledInstance(topDiscard.getWidth(), topDiscard.getHeight(),Image.SCALE_DEFAULT);
+
+			ImageIcon topDiscardIcon = new ImageIcon(theResizedCardImageFortopDiscard);
+
+			topDiscard.setIcon(topDiscardIcon);
+
+			// get the new hand of the other player
+			tmp = fromServer.readInt();
+			otherPlayerhandSize.setText(Integer.toString(tmp));
+
+			// ============================== DISPLAY NEW CARDS =========================
+			String [] receivedCards = playersHand.split(":");
+			slider.setMaximum(receivedCards.length - 1);
+			for(int i = 0; i < receivedCards.length - 1; i++) {
+				String[] temp = receivedCards[i].split(",");
+				if(receivedCards[1].equals("wild")) {
+					receivedCards[i] = "black,wild";
+				}
+			}
+			System.out.println(Arrays.toString(receivedCards));
+
+			if(status == SKIP)
+				skip = true;
+			else
+				skip = false;
+		} else {
+			continueToPlay = false;
+		}
 	}
 
 	//------------------------------------------------------------------------------------
@@ -1035,7 +1041,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 			// recieves the players delt hand
 			playersHand = fromServer.readUTF(); // UnoServer:283
-			
+
 			slider.setMaximum(playersHand.split(":").length - 1);
 			System.out.println("Player hand:\n" + playersHand);
 
