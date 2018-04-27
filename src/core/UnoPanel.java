@@ -32,6 +32,11 @@ import javax.swing.UIManager;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 
+/**
+ * Client for UNO game.
+ * 
+ * @version 1.0.0
+ */
 public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 	// Instantiate game variables
@@ -111,12 +116,16 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 		});
 	} // End of main ===============================================
 
-
+	/**
+	 * Calls initialize method.
+	 */
 	public UnoPanel() {
 		Init();
 	}
 
-	// Create the frame ============================================
+	/**
+	 * Creates the GUI frame.
+	 */
 	public void Init() {
 
 		// Creates main window
@@ -283,7 +292,9 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 		// Action Listeners ============================================================================
 
 
-		// Action listener if user wants to exit
+		/**
+		 * Action listener for button if user wants to exit the game.
+		 */
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Close dialog code
@@ -309,7 +320,9 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 		//------------------------------------------------------------------------------------
 
-
+		/**
+		 * Action listener for button if user wants
+		 */
 		btnGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -328,7 +341,9 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 		//------------------------------------------------------------------------------------
 
-
+		/**
+		 * Action listener for button user presses when wanting to play a card.
+		 */
 		btnPlaythiscard.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -368,7 +383,9 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 		//------------------------------------------------------------------------------------
 
 
-		// drawButton will act everytime a card is drawn.
+		/**
+		 * Action listener for button when user draws a card.
+		 */
 		drawButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				status = DRAW;
@@ -398,7 +415,9 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 		//------------------------------------------------------------------------------------
 
-		// play goes to the panel with the game -DEPRICATED
+		/**
+		 * Action listener for button when user wants to join a session and start a game.
+		 */
 		connect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e){
 
@@ -414,7 +433,9 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 		//------------------------------------------------------------------------------------
 
-
+		/**
+		 * Action listener for button when user goes to help menu.
+		 */
 		btnHelp.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				GameMenuPanel.setVisible(false); // panel is green
@@ -427,6 +448,9 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 		//------------------------------------------------------------------------------------
 
+		/**
+		 * Action listener for slider that allow user to scroll through hand.
+		 */
 		slider.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -506,8 +530,9 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 	// Begin defining functions ==========================================================
 
-
-
+	/**
+	 * Begins a new thread.
+	 */
 	@Override
 	public void run() {
 
@@ -581,7 +606,9 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 	//------------------------------------------------------------------------------------
 
-
+	/**
+	 * Sends a player's move to the server.
+	 */
 	private void sendMove() {
 
 		skippedOpponent = false;
@@ -874,7 +901,10 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 	//------------------------------------------------------------------------------------
 
-
+	/**
+	 * Receives moves and status info from the server.
+	 * @throws IOException
+	 */
 	public void receiveInfoFromServer() throws IOException {
 
 		myTurn = false;
@@ -940,6 +970,10 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 	//------------------------------------------------------------------------------------
 
+	/**
+	 * Waits for player to play a card.
+	 * @throws InterruptedException
+	 */
 	private void waitForPlayerAction() throws InterruptedException {
 
 		myTurn = true;
@@ -955,7 +989,9 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 	//------------------------------------------------------------------------------------
 
-
+	/**
+	 * Connecting to server.
+	 */
 	private void connectToServer() {
 		// --------------- Connect to server ----------------------------
 		try {
@@ -982,6 +1018,12 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 	// These functions should be in the GameLogic.java file
 
+	/**
+	 * Validates the current play.
+	 * @param pCurrentCard
+	 * @param pLastPlayedCard
+	 * @return
+	 */
 	private String validatePlay(String pCurrentCard, String pLastPlayedCard) {
 		String [] played = pCurrentCard.split(",");
 		String [] checkAgainst = pLastPlayedCard.split(",");
@@ -1015,7 +1057,9 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 	//------------------------------------------------------------------------------------
 
-
+	/**
+	 * Receives initial game data from the server.
+	 */
 	public void receiveInitialData() {
 
 		// set the player to the player number they are
@@ -1089,7 +1133,10 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 	}
 	//------------------------------------------------------------------------------------
 
-
+	/**
+	 * Shows window displaying who won.
+	 * @param winner
+	 */
 	private void showWinner(String winner) {
 
 		JOptionPane.showMessageDialog(null,
@@ -1101,7 +1148,11 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 
 	//------------------------------------------------------------------------------------
-	// if condition to check to see if it is win lose or tie
+	
+	/**
+	 * Checks the status of the game to see if any player won.
+	 * @param newStatus
+	 */
 	public void checkStatus(int newStatus) {
 
 		if(newStatus == PLAYER1_WON && player == PLAYER1) {
@@ -1135,7 +1186,10 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 	//------------------------------------------------------------------------------------
 
-
+	/**
+	 * Displays window to allow player to choose a color when playing a wild.
+	 * @return
+	 */
 	public String wildDialog(){
 		Object[] colors = {"blue", "red", "yellow", "green"};
 		String response = (String)JOptionPane.showInputDialog(

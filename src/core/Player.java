@@ -1,4 +1,10 @@
 package core;
+
+/**
+ * Player class for UNO game. Allows server to keep track of players' hands.
+ * 
+ * @version 1.0.0
+ */
 public class Player {
 
 	Unocard[] hand = new Unocard[80];
@@ -9,7 +15,10 @@ public class Player {
 
 	//===================================================================
 
-	/* Player constructor */
+	/**
+	 * Setting up player's hand and name.
+	 * @param d the deck
+	 */
 	public Player(Unodeck d) {
 		++playerNum;
 		playerName = "Player " + playerNum;
@@ -23,8 +32,10 @@ public class Player {
 
 
 	//===================================================================
-	// Define methods
 
+	/**
+	 * Displays hand to console.
+	 */
 	public void displayHand() {
 		System.out.println("");
 		for (int i = 0; i < handSize; ++i) {
@@ -40,12 +51,20 @@ public class Player {
 
 	// ===================================================================
 
+	/**
+	 * Returns the player's hand size.
+	 * @return handSize
+	 */
 	public int getHandSize(){
 		return handSize;
 	}
 
 	// ===================================================================
 
+	/**
+	 * Returns a string array of the player's hand.
+	 * @return cards
+	 */
 	public String [] getCardsInHand(){
 		String [] cards = new String[handSize];
 
@@ -62,6 +81,11 @@ public class Player {
 
 	// ===================================================================
 
+	/**
+	 * Returns a string of the player's hand. Takes in string array.
+	 * @param theCards string array
+	 * @return CardsInHand string
+	 */
 	public String sendCardsInHand(String [] theCards){
 		String CardsInHand = "";
 		for(int i = 0; i < theCards.length; i++){
@@ -72,7 +96,11 @@ public class Player {
 
 
 	// ===================================================================
-	/** update the handSize to have the index passed go away */
+	
+	/** 
+	 * Updates the handSize to have the index passed go away.
+	 * @param indexToRemove the index of the card to remove.
+	 */
 	public void updateHandAfterPlay(int indexToRemove){
 
 		Unocard[] newHand = new Unocard[80]; // remove one card for the play
@@ -92,13 +120,14 @@ public class Player {
 		for (int i = 0; i < handSize; ++i) {
 			hand[i] = newHand[i];
 		}
-
-
 	}
 
 	// ===================================================================
 
-
+	/**
+	 * Adds new card to hand and increases hand size.
+	 * @param drawnCard the card being added
+	 */
 	public void updateHandAfterDraw(Unocard drawnCard) {
 
 		hand[handSize] = drawnCard;
@@ -106,8 +135,12 @@ public class Player {
 
 	}
 
-
 	// ==================================================================
+	
+	/**
+	 * Returns the name of player (ex. "Player #")
+	 * @return playerName
+	 */
 	public String getName(){
 		return playerName;
 	}

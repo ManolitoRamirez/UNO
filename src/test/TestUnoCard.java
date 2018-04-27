@@ -12,7 +12,7 @@ import org.junit.Test;
 /**
  * Tests the Unocard class.
  * 
- * @author Ryan Kirmis
+ * @author Team #3
  */
 public class TestUnoCard 
 {

@@ -14,7 +14,7 @@ import org.junit.Test;
 /**
  * Test the Player class.
  * 
- * @author Ryan Kirmis
+ * @author Team #3
  */
 public class TestPlayer 
 {

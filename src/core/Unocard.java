@@ -1,12 +1,17 @@
 package core;
 import java.util.Random;
 
-/* cards 0-5
+/**
+ * Unocard class simulates a card and stores the cards color, value, and action (if action card).
+ * 
+ * cards 0-5
  * 2 reverse (card # 6,7),
  * 2 draw two (card # 8, 9)
  * 2 skip of each color (card # 10, 11)
  * and 2 wild (card # 12, 13)
  * 98 cards total
+ * 
+ * @version 1.0.0
  */
 
 public class Unocard {
@@ -17,7 +22,9 @@ public class Unocard {
 	private String action; // action of the card
 
 
-	// General Constructor
+	/**
+	 * Sets default values to color, value, and action.
+	 */
 	public Unocard() {
 		color = "black";
 		value = -1;
@@ -29,30 +36,57 @@ public class Unocard {
 
 	// Setters and Getters
 
+	/**
+	 * Returns the action.
+	 * @return action
+	 */
 	public String getAction() {
 		return action;
 	}
 
-	public void setAction(String pAction) {
-		action = pAction;
+	/**
+	 * Sets the action.
+	 * @param action
+	 */
+	public void setAction(String action) {
+		this.action = action;
 	}
 
+	/**
+	 * Gets the value.
+	 * @return value.
+	 */
 	public int getValue() {
 		return value;
 	}
 
-	public void setValue(int pValue) {
-		value = pValue;
+	/**
+	 * Sets the value.
+	 * @param value
+	 */
+	public void setValue(int value) {
+		this.value = value;
 	}
 
+	/**
+	 * Gets the color.
+	 * @return color
+	 */
 	public String getColor() {
 		return color;
 	}
 
-	public void setColor(String pColor) {
-		color = pColor;
+	/**
+	 * Sets the color.
+	 * @param color
+	 */
+	public void setColor(String color) {
+		this.color = color;
 	}
 
+	/**
+	 * Returns string representation of card (ex. "red,5").
+	 */
 	public String toString() {
 		if (value < 6) {
 			return color + "," + value;
@@ -61,6 +95,9 @@ public class Unocard {
 		}
 	}
 
+	/**
+	 * Prints the card to console.
+	 */
 	public void displayCard() {
 		System.out.print(getColor());
 		if(getValue()>5)System.out.println(","+getAction());
