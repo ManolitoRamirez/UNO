@@ -6,23 +6,30 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 
+/**
+ * Server for UNO game.
+ * 
+ * @version 1.0.0
+ */
 public class UnoServerNew extends JFrame implements UnoConstants {
 	//INITS
 	private int port = 8000;
 	JTextArea jta;
-	// Start of Main ===============================================
+	
+	/**
+	 * Entry point
+	 * @param args command line arguments
+	 */
 	public static void main(String[] args)
 	{
 		new UnoServerNew();
 	}
 	// End of Main =================================================
 
-	// Define UnoServerNew =========================================
+	/**
+	 * Creating server log.
+	 */
 	public UnoServerNew() {
-
-		Unodeck drawDeck = new Unodeck();
-		drawDeck.fillDeck();
-
 		jta = new JTextArea();
 
 		// Create GUI for server ===================================
@@ -36,6 +43,9 @@ public class UnoServerNew extends JFrame implements UnoConstants {
 		connect();
 	}
 
+	/**
+	 * Connects server and waits for clients to begin sessions.
+	 */
 	public void connect() {
 
 		// Try-Catch block
@@ -89,6 +99,9 @@ public class UnoServerNew extends JFrame implements UnoConstants {
 	}
 }
 
+/**
+ * Class to handle a session between 2 players.
+ */
 class HandleASession implements Runnable, UnoConstants
 {
 	private Socket player1socket;
@@ -113,7 +126,11 @@ class HandleASession implements Runnable, UnoConstants
 	public Player player1; // new Player(drawDeck);
 	public Player player2; // new Player(drawDeck);
 
-	// Construct a thread
+	/**
+	 * Constructs the thread with players.
+	 * @param player1
+	 * @param player2
+	 */
 	public HandleASession(Socket player1, Socket player2) {
 		this.player1socket = player1;
 		this.player2socket = player2;
@@ -123,7 +140,9 @@ class HandleASession implements Runnable, UnoConstants
 	} // End HandleASession Definition
 
 
-	// Implement the run() method for the thread ===============
+	/**
+	 * Beginning the thread / starting new session.
+	 */
 	public void run() {
 		try {
 
@@ -189,8 +208,17 @@ class HandleASession implements Runnable, UnoConstants
 
 	//============================================================
 
-	// Get the move from a player
-
+	/**
+	 * Gets and handles a move from a player.
+	 * @param player player who is moving
+	 * @param opponent opponent
+	 * @param fromPlayer
+	 * @param toPlayer
+	 * @param discardDeck
+	 * @param drawDeck
+	 * @param toOpponent
+	 * @throws IOException
+	 */
 	private void play(Player player, Player opponent, DataInputStream fromPlayer,
 			DataOutputStream toPlayer, Unodeck discardDeck, Unodeck drawDeck, DataOutputStream toOpponent)  throws IOException {
 
@@ -351,7 +379,16 @@ class HandleASession implements Runnable, UnoConstants
 
 	//============================================================
 
-	// overload send play for play
+	/**
+	 * Sends the opponent the player's move.
+	 * @param toOpponent
+	 * @param discardDeck
+	 * @param newHandSize
+	 * @param status
+	 * @param opponent
+	 * @param toPlayer
+	 * @throws IOException
+	 */
 	private void sendMove(DataOutputStream toOpponent, Unodeck discardDeck, int newHandSize, int status, Player opponent, DataOutputStream toPlayer) throws IOException {
 		try {
 
@@ -401,7 +438,14 @@ class HandleASession implements Runnable, UnoConstants
 
 	//============================================================
 
-	// test KAS 11/27
+	/**
+	 * Sends the initial game data to the player.
+	 * @param fromPlayer
+	 * @param toPlayer
+	 * @param opponentCardAmt
+	 * @param firstDiscard
+	 * @param playerHand
+	 */
 	public void sendInitial(DataInputStream fromPlayer, DataOutputStream toPlayer, int opponentCardAmt,
 			String firstDiscard, String playerHand) {
 

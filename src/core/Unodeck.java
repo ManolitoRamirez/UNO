@@ -1,12 +1,17 @@
 package core;
 import java.util.Random;
 
-/* cards 0-5
+/** 
+ * This class sets up an array of Unocards to simulate a deck.
+ * 
+ * cards 0-5
  * 2 reverse (card # 6,7),
  * 2 draw two (card # 8, 9)
  * 2 skip of each color (card # 10, 11)
  * and 2 wild (card # 12, 13)
  * 98 cards total
+ * 
+ * @version 1.0.0
  */
 
 public class Unodeck {
@@ -18,12 +23,20 @@ public class Unodeck {
 
 	//==================================================================================
 
+	/**
+	 * Returns the top card.
+	 * @return
+	 */
 	public Unocard peekCard() {
 		return deck[deckSize-1]; // deckSize - 1
 	}
 
 	//==================================================================================
 
+	/**
+	 * Returns the top card and removes it.
+	 * @return
+	 */
 	public Unocard popCard() {
 		deckSize--;
 		return deck[deckSize];
@@ -31,6 +44,10 @@ public class Unodeck {
 
 	//==================================================================================
 
+	/**
+	 * Pushes a new card to the deck.
+	 * @param c new card
+	 */
 	public void pushCard(Unocard c) {
 		deck[deckSize] = c;
 		deckSize++;
@@ -38,6 +55,9 @@ public class Unodeck {
 
 	//==================================================================================
 
+	/**
+	 * Displays the whole UNO deck.
+	 */
 	public void displayDeck() {
 		System.out.println("");
 		for (int i = 0; i < deckSize; ++i) {
@@ -55,10 +75,9 @@ public class Unodeck {
 
 	//==================================================================================
 
-
-
-	// Adrian's fill deck method
-
+	/**
+	 * Fills the UNO deck with 74 cards. Cards are added by color, number, and value.
+	 */
 	public void fillDeck()
 	{
 		String [] colors = {"red","blue","green","yellow"};
@@ -122,7 +141,12 @@ public class Unodeck {
 	}
 
 	//==================================================================================
-	/* function that shuffles all of the cards */
+	
+	/**
+	 * Shuffles all of the cards inside the deck using RNG.
+	 * Thoroughness can be changed to increase the number of swaps.
+	 * 
+	 */
 	public void shuffleDeck() {
 
 		int count = 0, thoroughness = 200, randCardPos;
@@ -139,14 +163,15 @@ public class Unodeck {
 			deck[0] = tmp;
 
 			++count;
-
 		}
-
-
-
 	}
 
 	//==================================================================================
+	
+	/**
+	 * Validates that the top card of the deck is not an action card.
+	 * It will continue to shuffle the deck until there is not an action card.
+	 */
 	public void validateStart() {
 		boolean flag = false;
 		while (!flag) {

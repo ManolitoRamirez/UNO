@@ -3,6 +3,8 @@ import core.*;
 
 import static org.junit.Assert.*;
 
+import java.time.temporal.TemporalAmount;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -12,7 +14,7 @@ import org.junit.Test;
 /**
  * Tests the Unodeck class.
  * 
- * @author Ryan Kirmis
+ * @author Team #3
  */
 public class TestUnoDeck 
 {
