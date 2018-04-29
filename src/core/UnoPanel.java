@@ -321,7 +321,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 		//------------------------------------------------------------------------------------
 
 		/**
-		 * Action listener for button if user wants
+		 * Action listener for button if user wants to return to game.
 		 */
 		btnGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -396,7 +396,9 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 		//------------------------------------------------------------------------------------
 
 
-		// play goes to the panel with the game
+		/**
+		 * Action listener for button when user wants to join a session and start a game.
+		 */
 		play.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -411,25 +413,6 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 			}
 		});
-
-
-		//------------------------------------------------------------------------------------
-
-		/**
-		 * Action listener for button when user wants to join a session and start a game.
-		 */
-		connect.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e){
-
-				// find a game button disappears, play button appears -GUI-
-				connect.setVisible(false);
-				connect.setEnabled(false);
-				GameMenuPanel.add(play);
-				play.setVisible(true);
-
-			}
-		});
-
 
 		//------------------------------------------------------------------------------------
 
