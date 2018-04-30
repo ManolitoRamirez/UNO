@@ -178,7 +178,7 @@ class HandleASession implements Runnable, UnoConstants
 					player2.sendCardsInHand(player2.getCardsInHand()));
 
 			// Continuously serve the players and determine and report
-			while(true) {
+		
 
 				while (continueToPlay) {
 					// get the play from player1
@@ -199,7 +199,7 @@ class HandleASession implements Runnable, UnoConstants
 					}
 					skippedPlayer2 = false;
 				}
-			}
+			
 
 		} catch (IOException ex) {
 			System.err.println(ex);
