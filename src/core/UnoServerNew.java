@@ -429,9 +429,9 @@ class HandleASession implements Runnable, UnoConstants
 			toPlayer.writeUTF("");
 			if(turn == UnoConstants.PLAYER1)
 			{
-				toPlayer.writeInt(UnoConstants.PLAYER2_WON);
-			} else {
 				toPlayer.writeInt(UnoConstants.PLAYER1_WON);
+			} else {
+				toPlayer.writeInt(UnoConstants.PLAYER2_WON);
 			}
 		}
 	}
