@@ -182,6 +182,21 @@ public class Unodeck {
 			} else flag = true; 					// else exit
 		}
 	}
+	
+	/**
+	 * Takes in another deck, and shuffles in everycard except for the top card
+	 * @param Takes in discard, and empties discard into this deck, leaving the top card
+	 */
+	public void shuffleIn(Unodeck discard) {
+		Unocard hold = discard.popCard();
+		int size = discard.deckSize;
+		for(int i = 0; i < size + 1; i++)
+		{
+			this.pushCard(discard.popCard());
+		}
+		this.shuffleDeck();
+		discard.pushCard(hold);
+	}
 
 
 }

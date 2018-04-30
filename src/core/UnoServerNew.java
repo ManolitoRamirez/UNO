@@ -358,8 +358,7 @@ class HandleASession implements Runnable, UnoConstants
 
 			} else if (drawDeck.deckSize == 0 || drawDeck.deckSize == 1) {
 
-				sendStatus = DRAW_GAME;
-				continueToPlay = false;
+				drawDeck.shuffleIn(discardDeck);
 
 			}
 
