@@ -90,7 +90,6 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 	JButton btnHelp;
 	JButton btnExit;
 	JButton drawButton;
-	JButton connect;
 	JButton play;
 	JButton btnPlaythiscard;
 
@@ -121,6 +120,46 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 	 */
 	public UnoPanel() {
 		Init();
+	}
+	
+	public void reset()
+	{
+		handSize = 7;
+		
+		myTurn = false;
+		waiting = true;
+		continueToPlay = true;
+		isValidPlay = false;
+		skip = false;
+		skippedOpponent = false;
+		
+		opponentName = null;
+		opponentCardCount = 0;
+		playersHand = null;
+		gameStarted = false;
+		status = 0;
+		checkStatus = 0;
+		continueToPlay = true;
+		
+		slider.setMinimum(0);
+		slider.setMaximum(6);
+		slider.setValue(3);
+		slider.setBounds(449, 489, 190, 29);
+		
+		GameBoardPanel.setVisible(false);
+		GameMenuPanel.setVisible(true);
+		
+		try {
+			toServer.flush();
+			toServer.close();
+			fromServer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	
+		play.setVisible(true);
+		drawButton.setEnabled(false);
+		btnPlaythiscard.setEnabled(false);
 	}
 
 	/**
@@ -186,9 +225,6 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 		drawButton.setBounds(799, 249, 165, 245);
 		GameBoardPanel.add(drawButton);
 
-		connect = new JButton("Find a game");
-		connect.setBounds(389, 342, 287, 82);
-
 		play = new JButton("Play Game");
 		play.setBounds(389, 342, 287, 82);
 
@@ -199,7 +235,6 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 		GameBoardPanel.setVisible(false);
 		// Add play button to GameMenuPanel
-		// GameMenuPanel.add(connect); // may take off
 		GameMenuPanel.add(play);
 		GameMenuPanel.setVisible(true);
 
@@ -321,7 +356,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 		//------------------------------------------------------------------------------------
 
 		/**
-		 * Action listener for button if user wants
+		 * Action listener for button if user wants to return to game.
 		 */
 		btnGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -396,7 +431,9 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 		//------------------------------------------------------------------------------------
 
 
-		// play goes to the panel with the game
+		/**
+		 * Action listener for button when user wants to join a session and start a game.
+		 */
 		play.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -411,25 +448,6 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 			}
 		});
-
-
-		//------------------------------------------------------------------------------------
-
-		/**
-		 * Action listener for button when user wants to join a session and start a game.
-		 */
-		connect.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e){
-
-				// find a game button disappears, play button appears -GUI-
-				connect.setVisible(false);
-				connect.setEnabled(false);
-				GameMenuPanel.add(play);
-				play.setVisible(true);
-
-			}
-		});
-
 
 		//------------------------------------------------------------------------------------
 
@@ -587,9 +605,11 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 						// Send the move to the server
 						sendMove();
 					}
-
 				}
 			}
+			
+			reset();
+
 		} catch (IOException | InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -1069,6 +1089,8 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 			if (player == PLAYER1) {
 				otherPlayerName.setText("Player 2");
 				myTurn = true; // set player1's turn to true
+				btnPlaythiscard.setEnabled(myTurn);
+				drawButton.setEnabled(myTurn);
 
 			} else {
 				otherPlayerName.setText("Player 1");
@@ -1138,11 +1160,18 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 	 * @param winner
 	 */
 	private void showWinner(String winner) {
-
-		JOptionPane.showMessageDialog(null,
-				winner + " won!",
-				"GAME OVER!",
-				JOptionPane.ERROR_MESSAGE);
+		JDialog.setDefaultLookAndFeelDecorated(true);
+		int response = JOptionPane.showConfirmDialog(null, 
+							winner + " won!\nWould you like to start a new game?", "Exit game",
+							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		
+		if (response == JOptionPane.NO_OPTION) {
+			System.out.println("No button clicked");
+		} else if (response == JOptionPane.YES_OPTION) {
+		    continueToPlay = false;
+		} else if (response == JOptionPane.CLOSED_OPTION) {
+			System.out.println("JOptionPane closed");
+		} // End of close dialog code
 	}
 
 
