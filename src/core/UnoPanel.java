@@ -90,7 +90,6 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 	JButton btnHelp;
 	JButton btnExit;
 	JButton drawButton;
-	JButton connect;
 	JButton play;
 	JButton btnPlaythiscard;
 
@@ -186,9 +185,6 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 		drawButton.setBounds(799, 249, 165, 245);
 		GameBoardPanel.add(drawButton);
 
-		connect = new JButton("Find a game");
-		connect.setBounds(389, 342, 287, 82);
-
 		play = new JButton("Play Game");
 		play.setBounds(389, 342, 287, 82);
 
@@ -199,7 +195,6 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 
 		GameBoardPanel.setVisible(false);
 		// Add play button to GameMenuPanel
-		// GameMenuPanel.add(connect); // may take off
 		GameMenuPanel.add(play);
 		GameMenuPanel.setVisible(true);
 
@@ -321,7 +316,7 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 		//------------------------------------------------------------------------------------
 
 		/**
-		 * Action listener for button if user wants
+		 * Action listener for button if user wants to return to game.
 		 */
 		btnGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -408,24 +403,6 @@ public class UnoPanel extends JFrame implements UnoConstants, Runnable {
 				GameBoardPanel.setVisible(true);
 
 				connectToServer();
-
-			}
-		});
-
-
-		//------------------------------------------------------------------------------------
-
-		/**
-		 * Action listener for button when user wants to join a session and start a game.
-		 */
-		connect.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e){
-
-				// find a game button disappears, play button appears -GUI-
-				connect.setVisible(false);
-				connect.setEnabled(false);
-				GameMenuPanel.add(play);
-				play.setVisible(true);
 
 			}
 		});
